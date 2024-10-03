@@ -38,9 +38,28 @@ function animate ()
     bubbleX(i) = rand() * imageWidth;
     bubbleY(i) = imageHeight;
 
-    endfor
+  endfor
 
+    % create fish
+  fishX = 200;
+  fishY = 500;
+  fishRadius = 50;
+  fishForwardMove = 100;
+  fishColor = [1 0 0];
+  fishLineWidth = 3;
+
+
+    % ******************************* Animate Loop *********************************
 for( clock = 1:500 )
+
+    % draw fish
+    fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
+
+    % move fish
+    fishX = fishX + fishForwardMove;
+
+    % check fish
+    [fishX,fishY] = checkBoundary(fishX,fishY,oceanWidth,oceanHeight,2*fishRadius);
 
 
     yCenter = yCenter - DyCircle
@@ -49,6 +68,7 @@ for( clock = 1:500 )
     % Change the X and Y step of the squid per movement
    %Dy = Dy - 100;
     Dx = Dx + 100;
+  %  squidX = squidX + squidForwardMove
 
     %  And Rotate
    % squidTheta = squidTheta + squidDeltaTheta;
