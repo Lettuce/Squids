@@ -6,7 +6,7 @@ function animate ()
   color = [.2 .1 .6];
   width = 2;
   squidSize = 50;
-  squidStep = 50;
+  squidStep = 30;
 
 
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
