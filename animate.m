@@ -45,7 +45,7 @@ function animate ()
   fishY = 500;
   fishRadius = 50;
   fishForwardMove = 100;
- % fishColor = [1 0 0];
+  fishColor = [1 0 0];
   fishLineWidth = 3;
 
 
@@ -60,7 +60,7 @@ function animate ()
 
     % squid location and heading
     squidX = 300;
-    squidY = 200;
+    squidY = 500;
     squidTheta = 0;
 
 
@@ -71,17 +71,17 @@ for( clock = 1:500 )
 theta = squidTheta;
 
 R = getRotate(squidTheta);
-squid = getSquid (squidSize,clock)
+squid = getSquid (squidSize,clock);
 squid = R*squid;
 
     % draw fish
-  %  fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
+    fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
 
     % move fish
-  % fishX = fishX + fishForwardMove;
+   fishX = fishX + fishForwardMove;
 
     % check fish
-  %  [fishX,fishY] = checkBoundary(fishX,fishY,oceanWidth,oceanHeight,2*fishRadius);
+    [fishX,fishY] = checkBoundary(fishX,fishY,imageWidth,imageHeight,2*fishRadius);
 
 
     yCenter = yCenter - DyCircle
@@ -108,7 +108,7 @@ squid = R*squid;
 
    % draw the squid
    squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY,squidTheta);
-   [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,squidWidth/2);
+   [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
 
 
 
@@ -127,21 +127,21 @@ squid = R*squid;
 endfor
 
 
-[xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius)
+[xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius);
 
-[Dx, Dy] = checkBoundary (Dx,Dy,imageWidth,imageHeight,2*squidSize)
+[Dx, Dy] = checkBoundary (Dx,Dy,imageWidth,imageHeight,2*squidSize);
  % squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY)
 
 
 
   if (yCenter - 2*radius < 0) % circle return
-    yCenter = imageHeight-2*radius
+    yCenter = imageHeight-2*radius;
   endif
 
 
 
 for i = 1:  numBubbles
-    circleHandle(i) = drawCircle (bubbleRadius(i), bubbleX(i), bubbleY(i), bubbleLineColor, bubbleLineWidth)
+    circleHandle(i) = drawCircle (bubbleRadius(i), bubbleX(i), bubbleY(i), bubbleLineColor, bubbleLineWidth);
 
   endfor
 
@@ -170,7 +170,7 @@ for i = 1:  numBubbles
 %    bubbleX(i) = rand() * imageWidth;
 %    bubbleY(i) = rand() * imageHeight;
 
-pause(.1)
+pause(.05);
 
 
  for i=1: numBubbles
@@ -178,6 +178,7 @@ pause(.1)
  endfor
 
   delete(squidHandle);
+  delete(fishHandle);
 
  % delete(h)
 

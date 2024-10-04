@@ -17,7 +17,7 @@ function circleHandle = drawCircle (radius, xCenter, yCenter, circleColor, circl
    % call the translate
    T = getTranslate(xCenter,yCenter);
 
-   circleMatrix = [x;y;z]
+   circleMatrix = [x;y;z];
    %translated circle
    circleMatrix = T*circleMatrix;
 

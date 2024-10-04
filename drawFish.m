@@ -1,4 +1,4 @@
-function fishHandle = drawFish (radius, xCenter, yCenter, lineColor, lineWidth)
+function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWidth)
     lineSegments = 50;
     deltaTheta = 2*pi/lineSegments;
     mouthTheta = pi/3;
