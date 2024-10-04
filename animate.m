@@ -45,21 +45,43 @@ function animate ()
   fishY = 500;
   fishRadius = 50;
   fishForwardMove = 100;
-  fishColor = [1 0 0];
+ % fishColor = [1 0 0];
   fishLineWidth = 3;
+
+
+    % squid drawing parameters
+    squidColor = [.2 .1 .6]
+    squidWidth = 3;
+    squidSize = 60;
+
+    % squid movement resolutions
+    squidForwardMove = 100;
+    squidDeltaTheta = pi/3;
+
+    % squid location and heading
+    squidX = 300;
+    squidY = 200;
+    squidTheta = 0;
 
 
     % ******************************* Animate Loop *********************************
 for( clock = 1:500 )
 
+
+theta = squidTheta;
+
+R = getRotate(squidTheta);
+squid = getSquid (squidSize,clock)
+squid = R*squid;
+
     % draw fish
-    fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
+  %  fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
 
     % move fish
-    fishX = fishX + fishForwardMove;
+  % fishX = fishX + fishForwardMove;
 
     % check fish
-    [fishX,fishY] = checkBoundary(fishX,fishY,oceanWidth,oceanHeight,2*fishRadius);
+  %  [fishX,fishY] = checkBoundary(fishX,fishY,oceanWidth,oceanHeight,2*fishRadius);
 
 
     yCenter = yCenter - DyCircle
@@ -67,15 +89,28 @@ for( clock = 1:500 )
 
     % Change the X and Y step of the squid per movement
    %Dy = Dy - 100;
-    Dx = Dx + 100;
+  %  Dx = Dx + 100;
   %  squidX = squidX + squidForwardMove
 
-    %  And Rotate
-   % squidTheta = squidTheta + squidDeltaTheta;
-   % Dx = Dx + squidForwardMove*cos(squidTheta);
-   % Dy = Dy + squidForwardMove*cos(squidTheta);
 
-   % squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY)
+
+    %  And Rotate ( Update the squid's heading and position
+  % squidX = squidX + squidForwardMove*cos(squidTheta);
+   squidX = squidX + 100;
+  % squidY = squidY + 100;
+   squidY = squidY + squidForwardMove*cos(squidTheta);
+
+   squidTheta = squidTheta + squidDeltaTheta;
+   squidX = squidX + squidForwardMove*cos(squidTheta);
+   squidY = squidY + squidForwardMove*cos(squidTheta);
+
+
+
+   % draw the squid
+   squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY,squidTheta);
+   [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,squidWidth/2);
+
+
 
     for i=1: numBubbles % bubble ascention
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
@@ -111,7 +146,7 @@ for i = 1:  numBubbles
   endfor
 
 
-  h = drawSquid(squidSize,color,width,clock,Dx,Dy);
+ % h = drawSquid(squidSize,color,width,clock,Dx,Dy);
 
 ##c2 = drawCircle(radius,xCenter,yCenter,circleColor,circleLineWidth);
 
@@ -142,8 +177,9 @@ pause(.1)
    delete(circleHandle(i));
  endfor
 
+  delete(squidHandle);
 
-  delete(h)
+ % delete(h)
 
 
   endfor

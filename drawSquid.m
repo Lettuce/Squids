@@ -1,4 +1,4 @@
-function squidHandle = drawSquid (squidSize, color, width, clock, Dx, Dy)
+function squidHandle = drawSquid (squidSize, color, width, clock, Dx, Dy, squidTheta)
 
 
     % get the translate matrix
@@ -6,7 +6,7 @@ function squidHandle = drawSquid (squidSize, color, width, clock, Dx, Dy)
 
 
     %rotate by 90 degrees *** Adding a negative sign to pi flips it vertical
-    R = getRotate(-pi/2);
+    R = getRotate(squidTheta);
     squid = R*squid;
 
     % get the squid
