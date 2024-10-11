@@ -3,6 +3,17 @@ function animate ()
   imageName = "OceanImage.png";
   [imageHeight,imageWidth] = drawOcean(imageName);
 
+  playerX = round(imageWidth/2);
+  playerY = round(imageHeight/2);
+  playerTheta = 0;
+  playerBodySize = 100;
+  playerHeadSize = 30;
+  netSize = 20;
+  playerColor = [ 0 0 1 ];
+  playerLineWidth = 2;
+
+  drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth);
+
   color = [.2 .1 .6];
   width = 2;
   squidSize = 50;
@@ -65,22 +76,22 @@ function animate ()
 
 
     % ******************************* Animate Loop *********************************
-for( clock = 1:500 )
+for(  myClock = 1:500 )
 
 
 %theta = squidTheta;
 
 R = getRotate(squidTheta);
-squid = getSquid (squidSize,clock);
+squid = getSquid (squidSize, myClock);
 squid = R*squid;
 
-    % draw fish
-    fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth);
+  % draw fish
+    fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth, myClock);
 
-    % move fish
-   fishX = fishX + fishForwardMove;
+  % move fish
+    fishX = fishX + fishForwardMove;
 
-    % check fish
+  % check fish
     [fishX,fishY] = checkBoundary(fishX,fishY,imageWidth,imageHeight,2*fishRadius);
 
 
@@ -107,7 +118,7 @@ squid = R*squid;
 
 
    % draw the squid
-   squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY,squidTheta);
+   squidHandle = drawSquid(squidSize,squidColor,squidWidth, myClock,squidX,squidY,squidTheta);
    [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
 
 
@@ -130,7 +141,7 @@ endfor
 [xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius);
 
 %[Dx, Dy] = checkBoundary (Dx,Dy,imageWidth,imageHeight,2*squidSize);
- % squidHandle = drawSquid(squidSize,squidColor,squidWidth,clock,squidX,squidY)
+ % squidHandle = drawSquid(squidSize,squidColor,squidWidth, myClock,squidX,squidY)
 
 
 
@@ -148,7 +159,7 @@ for i = 1:  numBubbles
   endfor
 
 
- % h = drawSquid(squidSize,color,width,clock,Dx,Dy);
+ % h = drawSquid(squidSize,color,width, myClock,Dx,Dy);
 
 ##c2 = drawCircle(radius,xCenter,yCenter,circleColor,circleLineWidth);
 
@@ -179,6 +190,7 @@ pause(.1);
 
   delete(squidHandle);
   delete(fishHandle);
+
 
  % delete(h)
 
