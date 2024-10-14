@@ -4,7 +4,7 @@ function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWid
     tickTock = mod( myClock,2)
 
     mouthAngle = pi/5;
-    teethSize = 1;
+    teethSize = 5;
 
     if(tickTock == 0)
       mouthAngle = pi/5;

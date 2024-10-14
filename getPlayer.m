@@ -1,18 +1,41 @@
 function player = getPlayer (bodySize, headSize, netSize)
 
+% 16 points
+
+
+
+
+  % body
+   pt1 = [-bodySize;0;1]; %top of neshnine
+   pt6 = [0;0;1];
+   pt7 = [-bodySize;0;1]; % hip
+   pt8 = [-1.4*bodySize; -0.4*bodySize;1]% right foot
+   pt9 = [-1.6*bodySize; -0.2*bodySize;1]% right flipper
+   pt10 = [-1.4*bodySize; 0.4*bodySize;1]% left foot
+   pt11 = [-1.6*bodySize; 0.2*bodySize;1]% left flipper
+
+   % tank
+  pt2 = [0.7*bodySize;0;1]; %top of the tank
+  pt3 = [0.27*bodySize; -0.2 * bodySize;1];
+  pt4 = [-0.7*bodySize; -0.2 * bodySize;1];
+  pt5 = [-0.7*bodySize;0;1];
+
+
+
+   bodyPoints = [pt1,pt2];
+
 
   % headsponentials
   head = getCircle(headSize,0);
-  T = getTranslate(bodySize+headSize,0);
-  head = T*head;
+  T = getTranslate(bodySize,0);
+  headPoints = T*head;
 
-  % body
-
- # body =
+  # body =
 
   % arm
 
  # arm =
+
 
   % leg
 
@@ -30,6 +53,6 @@ function player = getPlayer (bodySize, headSize, netSize)
 
  # player = [headHandle, bodyHandle, legHandle, tankHandle, netHandle];
 
-  player = head;
+  player = [headPoints,pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11];
 
   endfunction

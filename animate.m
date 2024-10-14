@@ -98,6 +98,11 @@ squid = R*squid;
     yCenter = yCenter - DyCircle;
 
 
+
+
+
+
+
     % Change the X and Y step of the squid per movement
    %Dy = Dy - 100;
   %  Dx = Dx + 100;
