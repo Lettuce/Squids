@@ -20,6 +20,8 @@ function animate ()
   squidStep = 30;
 
 
+
+
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
 
   maxRadius = 20;
@@ -74,9 +76,14 @@ function animate ()
     squidY = 500;
     squidTheta = 0;
 
+      % game Clock
+  myClock = 0;
 
     % ******************************* Animate Loop *********************************
-for(  myClock = 1:500 )
+  while( true)
+
+    myClock = myClock+1;
+%  for(  myClock = 1:500 )
 
 
 %theta = squidTheta;
@@ -131,6 +138,8 @@ squid = R*squid;
     for i=1: numBubbles % bubble ascention
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
  endfor
+
+ [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize)
 
 
  for i=1: numBubbles % bubble check add
@@ -200,6 +209,6 @@ pause(.1);
  % delete(h)
 
 
-  endfor
+  endwhile
 
 endfunction

@@ -22,6 +22,14 @@ function playerHandle = drawPlayer (playerX, playerY, playerTheta, ...
   pt4 = player(:,4);
   pt5 = player(:,5);
 
+  % net
+
+
+  pt12 = player(:,12);
+  pt14 = player(:,14);
+  % arm
+  pt13 = player(:,13);
+
   handle(1) = drawLine(pt1,pt7, playerColor, playerLineWidth);
   handle(2) = drawLine(pt7,pt8, playerColor, playerLineWidth);
   handle(3) = drawLine(pt8,pt9, playerColor, playerLineWidth);
@@ -30,9 +38,14 @@ function playerHandle = drawPlayer (playerX, playerY, playerTheta, ...
   handle(6) = drawLine(pt5,pt4, playerColor, playerLineWidth);
   handle(7) = drawLine(pt4,pt3, playerColor, playerLineWidth);
   handle(8) = drawLine(pt3,pt2, playerColor, playerLineWidth);
+ % handle(9) = drawLine(pt12,pt14, playerColor, playerLineWidth);
 
   x = player(1,:);
   y = player(2,:);
+
+  % get the player points for player at the origin
+ % [player,firstHeadPoint] = getPlayer (playerBodySize);
+ % [playerRows, lastHeadPoint] = size(player);
 
   playerHandle = line(x,y);
 
