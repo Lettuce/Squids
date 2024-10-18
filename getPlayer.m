@@ -1,4 +1,4 @@
-function player = getPlayer (bodySize, headSize, netSize)
+function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize)
 
 % 16 points
 
@@ -6,7 +6,7 @@ function player = getPlayer (bodySize, headSize, netSize)
 
 
   % body
-   pt1 = [-bodySize;0;1]; %top of neshnine
+   pt1 = [bodySize;0;1]; %top of neshnine
    pt6 = [0;0;1];
    pt7 = [-bodySize;0;1]; % hip
    pt8 = [-1.4*bodySize; -0.4*bodySize;1]% right foot
@@ -16,22 +16,20 @@ function player = getPlayer (bodySize, headSize, netSize)
 
    pt12 = [0;0.5*bodySize;1]; %hand
    pt13 = [0.7*bodySize; 0.5*bodySize;1];
+   pt14 = [2*bodySize; 0.5*bodySize;1];
 
    % tank
   pt2 = [0.7*bodySize;0;1]; %top of the tank/shoulder
-  pt3 = [0.27*bodySize; -0.2 * bodySize;1];
-  pt4 = [-0.7*bodySize; -0.2 * bodySize;1];
+  pt3 = [0.7*bodySize; -0.2*bodySize;1];
+  pt4 = [-0.7*bodySize; -0.2*bodySize;1];
   pt5 = [-0.7*bodySize;0;1];
 
 
-
-   bodyPoints = [pt1,pt2];
-
-
-  % headsponentials
+  % head
   headRadius = bodySize/4;
   headPoints = getCircle(headRadius,0);
   T = getTranslate(headRadius+bodySize,0);
+  headPoints = T * headPoints;
 
  % head = getCircle(headSize,0);
  % T = getTranslate(bodySize,0);
@@ -60,6 +58,8 @@ function player = getPlayer (bodySize, headSize, netSize)
 
  # player = [headHandle, bodyHandle, legHandle, tankHandle, netHandle];
 
-  player = [headPoints,pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11];
+  player = [pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11,pt12,pt13,pt14,headPoints];
+
+  firstHeadPoint = 15; % update as more points are added to player
 
   endfunction

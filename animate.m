@@ -6,13 +6,12 @@ function animate ()
   playerX = round(imageWidth/2);
   playerY = round(imageHeight/2);
   playerTheta = 0;
-  playerBodySize = 100;
+  playerBodySize = 250;
   playerHeadSize = 30;
   netSize = 20;
   playerColor = [ 0 0 1 ];
-  playerLineWidth = 2;
+  playerLineWidth = 3;
 
-  drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth);
 
   color = [.2 .1 .6];
   width = 2;
@@ -139,7 +138,11 @@ squid = R*squid;
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
  endfor
 
- [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize)
+
+  playerX = playerX + 100;
+
+  [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize)
+  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth);
 
 
  for i=1: numBubbles % bubble check add
@@ -204,6 +207,8 @@ pause(.1);
 
   delete(squidHandle);
   delete(fishHandle);
+  delete(playerHandle);
+
 
 
  % delete(h)
