@@ -4,7 +4,12 @@ function handle = drawPlayer (playerX, playerY, playerTheta, ...
 
   [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize);
 
- T = getTranslate(playerX,playerY);
+  % rotate player
+  R = getRotate(playerTheta);
+  player = R*player;
+
+  % translate player
+  T = getTranslate(playerX,playerY);
   player = T*player
 
    % body

@@ -1,11 +1,25 @@
 function animate ()
 
-  imageName = "OceanImage.png";
-  [imageHeight,imageWidth] = drawOcean(imageName);
+  % Set up the game background to read keyboard events
+  figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
+                'Name', 'Keyboard Reader', ...
+                'NumberTitle', 'off', ...
+                'MenuBar', 'none', ...
+                'Position', [100, 100, 300, 200]); %Set the figure size
 
+  % Display background image
+  imageName = "OceanImage.png";
+  image = imread(imageName);
+  [imageHeight,imageWidth] = drawOcean(image);
+  imshow(imageName);
+
+  % Command parameters
+  cmd = "null";
+
+  % Player parameters
   playerX = round(imageWidth/2);
   playerY = round(imageHeight/2);
-  playerTheta = 0;
+  playerTheta = pi/4;
   playerBodySize = 250;
   playerHeadSize = 30;
   netSize = 20;
@@ -82,10 +96,17 @@ function animate ()
   while( true)
 
     myClock = myClock+1;
-%  for(  myClock = 1:500 )
+
+    % Move Player
+    if( cmd == "a" || cmd == "d" || cmd == "w"  )
+    %[playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd)
+    cmd
+    cmd = "null";
+    endif
 
 
-%theta = squidTheta;
+
+
 
 R = getRotate(squidTheta);
 squid = getSquid (squidSize, myClock);
@@ -176,29 +197,6 @@ for i = 1:  numBubbles
   endfor
 
 
- % h = drawSquid(squidSize,color,width, myClock,Dx,Dy);
-
-##c2 = drawCircle(radius,xCenter,yCenter,circleColor,circleLineWidth);
-
-% numBubbles = 5;
-% bubbleRadius = 20;
-% minBubbleRadius = 5;
-%
-% createbubbles
-% for i=1: numBubbles
-%   bubbleRadius(i) = rand() * bubbleRadius + minBubbleRadius;
-%   bubbleX(i) = rand() * imageWidth;
-%   bubbleY(i) = rand() * imageHeight;
-%
-
-% bubbleMaxRadius= 50;
-% bubbleMinRadius = 5;
-%  numBubbles = 7;
-
-%  for i = 1:  numBubbles
-%    bubbleRadius(i) = rand() * bubbleMaxRadius + bubbleMinRadius;
-%    bubbleX(i) = rand() * imageWidth;
-%    bubbleY(i) = rand() * imageHeight;
 
 pause(.1);
 
@@ -214,6 +212,21 @@ pause(.1);
  % delete(h)
 
 
-  endwhile
+endwhile
+ % **************************** END ANIMATE LOOP *****************************
 
-endfunction
+ function keypress_callback(event)
+
+          % Set the command
+          cmd = event.Key;
+
+          % Check for 'q' to quit
+          if strcmp(cmd, 'q')
+              disp('Quitting...');
+              close(figureHandle); % Close the figure
+          endif
+  endfunction
+
+ endfunction
+
+
