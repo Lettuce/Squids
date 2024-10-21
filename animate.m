@@ -10,7 +10,7 @@ function animate ()
   % Display background image
   imageName = "OceanImage.png";
   image = imread(imageName);
-  [imageHeight,imageWidth] = drawOcean(image);
+  [imageHeight,imageWidth] = size(image);
   imshow(imageName);
 
   % Command parameters
@@ -99,7 +99,7 @@ function animate ()
 
     % Move Player
     if( cmd == "a" || cmd == "d" || cmd == "w"  )
-    %[playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd)
+    [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd)
     cmd
     cmd = "null";
     endif
@@ -107,10 +107,10 @@ function animate ()
 
 
 
-
-R = getRotate(squidTheta);
-squid = getSquid (squidSize, myClock);
-squid = R*squid;
+  % Rotate squid
+  R = getRotate(squidTheta);
+  squid = getSquid (squidSize, myClock);
+  squid = R*squid;
 
   % draw fish
     fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth, myClock);
@@ -160,10 +160,10 @@ squid = R*squid;
  endfor
 
 
-  playerX = playerX + 100;
+  %playerX = playerX + 100;
 
   [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize)
-  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth);
+  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock);
 
 
  for i=1: numBubbles % bubble check add

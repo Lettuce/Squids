@@ -1,8 +1,8 @@
 function handle = drawPlayer (playerX, playerY, playerTheta, ...
                               playerBodySize, playerHeadSize, netSize, ...
-                              playerColor, playerLineWidth)
+                              playerColor, playerLineWidth, myClock)
 
-  [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize);
+  [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize, myClock);
 
   % rotate player
   R = getRotate(playerTheta);

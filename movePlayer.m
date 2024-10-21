@@ -16,4 +16,4 @@ function [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta
     playerTheta = playerTheta-thetaMove;
   endif
 
-  end function
+  endfunction

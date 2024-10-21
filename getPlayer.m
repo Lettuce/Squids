@@ -1,35 +1,43 @@
-function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize)
-
-% 16 points
+function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClock)
 
 
+  legCycleTicks = 120;
+  legAngle = (2 * pi/legCycleTicks)*myClock;
+  legLength = bodySize
+  % 16 points
 
 
-  % body
+
+
+   % body
    pt1 = [bodySize;0;1]; %top of neshnine
    pt6 = [0;0;1];
    pt7 = [-bodySize;0;1]; % hip
-   pt8 = [-1.4*bodySize; -0.4*bodySize;1]% right foot
+
+   % Right Leg
+   pt8 = [pt7(1) + legLength*cos(legAngle); pt7(2) + legLength*sin(legAngle);1]% right foot
    pt9 = [-1.6*bodySize; -0.2*bodySize;1]% right flipper
+
+   % Left Leg
    pt10 = [-1.4*bodySize; 0.4*bodySize;1]% left foot
    pt11 = [-1.6*bodySize; 0.2*bodySize;1]% left flipper
 
+   % Arms
    pt12 = [0;0.5*bodySize;1]; %hand
    pt13 = [0.7*bodySize; 0.5*bodySize;1];
    pt14 = [2*bodySize; 0.5*bodySize;1];
 
    % tank
-  pt2 = [0.7*bodySize;0;1]; %top of the tank/shoulder
-  pt3 = [0.7*bodySize; -0.2*bodySize;1];
-  pt4 = [-0.7*bodySize; -0.2*bodySize;1];
-  pt5 = [-0.7*bodySize;0;1];
+   pt2 = [0.7*bodySize;0;1]; %top of the tank/shoulder
+   pt3 = [0.7*bodySize; -0.2*bodySize;1];
+   pt4 = [-0.7*bodySize; -0.2*bodySize;1];
+   pt5 = [-0.7*bodySize;0;1];
 
-
-  % head
-  headRadius = bodySize/4;
-  headPoints = getCircle(headRadius,0);
-  T = getTranslate(headRadius+bodySize,0);
-  headPoints = T * headPoints;
+   % head
+   headRadius = bodySize/4;
+   headPoints = getCircle(headRadius,0);
+   T = getTranslate(headRadius+bodySize,0);
+   headPoints = T * headPoints;
 
  % head = getCircle(headSize,0);
  % T = getTranslate(bodySize,0);
