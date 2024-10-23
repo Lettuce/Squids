@@ -1,8 +1,8 @@
 function handle = drawPlayer (playerX, playerY, playerTheta, ...
                               playerBodySize, playerHeadSize, netSize, ...
-                              playerColor, playerLineWidth, myClock)
+                              playerColor, playerLineWidth, myClock,cmd)
 
-  [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize, myClock);
+  [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize, myClock,cmd);
 
   % rotate player
   R = getRotate(playerTheta);
@@ -10,7 +10,7 @@ function handle = drawPlayer (playerX, playerY, playerTheta, ...
 
   % translate player
   T = getTranslate(playerX,playerY);
-  player = T*player
+  player = T*player;
 
    % body
    pt1 = player(:,1); %top of neshnine

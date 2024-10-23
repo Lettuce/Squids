@@ -20,7 +20,7 @@ function animate ()
   playerX = round(imageWidth/2);
   playerY = round(imageHeight/2);
   playerTheta = pi/4;
-  playerBodySize = 250;
+  playerBodySize = 100;
   playerHeadSize = 30;
   netSize = 20;
   playerColor = [ 0 0 1 ];
@@ -99,12 +99,13 @@ function animate ()
 
     % Move Player
     if( cmd == "a" || cmd == "d" || cmd == "w"  )
-    [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd)
-    cmd
-    cmd = "null";
+    [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd);
     endif
 
-
+    %Draw player
+  [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize);
+  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
+  cmd = "null";
 
 
   % Rotate squid
@@ -162,8 +163,7 @@ function animate ()
 
   %playerX = playerX + 100;
 
-  [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize)
-  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock);
+
 
 
  for i=1: numBubbles % bubble check add
