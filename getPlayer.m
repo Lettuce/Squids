@@ -1,4 +1,4 @@
-function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClock,cmd)
+function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClock, cmd)
 
   legCycleTicks = 120;
   legAngle = (2 * pi/legCycleTicks)*myClock;
