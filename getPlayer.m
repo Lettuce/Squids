@@ -1,5 +1,6 @@
 function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClock, cmd)
 
+  %Move legs
   legCycleTicks = 120;
   legAngle = (2 * pi/legCycleTicks)*myClock;
   legLength = 2*bodySize;
