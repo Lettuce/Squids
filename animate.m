@@ -1,5 +1,16 @@
 function animate ()
 
+  % global parameters
+    global cmd;
+    global mouseCmd;
+    global mouseX;
+    global mouseY
+    global mousePreviousX;
+    global mousePreviousY;
+    global playerX;
+    global playerY;
+
+
   % Set up the game background to read keyboard events
   figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
                 'Name', 'Keyboard Reader', ...
