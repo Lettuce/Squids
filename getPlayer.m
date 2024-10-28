@@ -17,12 +17,35 @@ function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClo
    legAngleTicks = 20;
    legLength = bodySize;
 
-   cmd
+   if (cmd == "w")
+
+     legAngleRight = pi + legAngleMax*sin(2*pi*myClock/legAngleTicks);
+     legAngleLeft = pi - legAngleMax*sin(2*pi*myClock/legAngleTicks);
+
+     if(cos(2*pi*myClock/legAngleTicks)>0)
+      flipperAngleRight = legAngleRight - flipperMaxAngle;
+     else
+      flipperAngleRight = legAngleRight + flipperMaxAngle;
+     endif
+
+     if (-cos(2*pi*myClock/legAngleTicks)>0)
+       flipperAngleLeft = legAngleLeft - flipperMaxAngle;
+     else
+       flipperAngleLeft = legAngleLeft + flipperMaxAngle;
+     endif
+
+    else
+      legAngleRight = pi;
+      legAngleLeft = pi;
+      flipperAngleRight = legAngleRight - flipperMaxAngle;
+      flipperAngleLeft = legAngleLeft + flipperMaxAngle;
+   endif
+
+
 
    if( cmd == "a" || cmd == "d" || cmd == "w")
     legAngleRight = pi + legAngleMax*sin(2*pi*myClock/legAngleTicks);
-    cmd
-    legAngleLeft  = pi + legAngleMax*cos(2*pi*myClock/legAngleTicks)
+    legAngleLeft  = pi + legAngleMax*cos(2*pi*myClock/legAngleTicks);
     flipperAngleRight = pi + flipperMaxAngle*sin(2*pi*myClock/legAngleTicks);
     flipperAngleLeft = pi + flipperMaxAngle*cos(2*pi*myClock/legAngleTicks);
    else

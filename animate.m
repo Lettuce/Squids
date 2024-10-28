@@ -50,7 +50,7 @@ function animate ()
 
   bubbleMaxRadius= 50;
   bubbleLineWidth = 3;
-  bubbleLineColor = [1 1 1]
+  bubbleLineColor = [1 1 1];
   bubbleStep = 50;
   bubbleMinRadius = 5;
   numBubbles = 7;
@@ -76,7 +76,7 @@ function animate ()
 
 
     % squid drawing parameters
-    squidColor = [.2 .1 .6]
+    squidColor = [.2 .1 .6];
     squidWidth = 3;
     squidSize = 60;
 

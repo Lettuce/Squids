@@ -1,7 +1,7 @@
 function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWidth,  myClock)
 
   % compute tickTock
-    tickTock = mod( myClock,2)
+    tickTock = mod( myClock,2);
 
     mouthAngle = pi/5;
     teethSize = 5;
