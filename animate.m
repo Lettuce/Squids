@@ -3,10 +3,6 @@ function animate ()
   % global parameters
     global cmd;
     global mouseCmd;
-    global mouseX;
-    global mouseY
-    global mousePreviousX;
-    global mousePreviousY;
     global playerX;
     global playerY;
 
@@ -26,6 +22,7 @@ function animate ()
 
   % Command parameters
   cmd = "null";
+  mouseCmd = "null";
 
   % Player parameters
   playerX = round(imageWidth/2);
