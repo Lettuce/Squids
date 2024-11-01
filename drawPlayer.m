@@ -1,6 +1,6 @@
-function handle = drawPlayer (playerX, playerY, playerTheta, ...
+function [handle, spearX, spearY] = drawPlayer (playerX, playerY, playerTheta, ...
                               playerBodySize, playerHeadSize, netSize, ...
-                              playerColor, playerLineWidth, myClock,cmd)
+                              playerColor, playerLineWidth, myClock, cmd)
 
   [player,firstHeadPoint] = getPlayer (playerBodySize, playerHeadSize, netSize, myClock,cmd);
 
@@ -34,6 +34,11 @@ function handle = drawPlayer (playerX, playerY, playerTheta, ...
   pt14 = player(:,14);
   % arm
   pt13 = player(:,13);
+
+  % spear
+
+  spearX = pt12(1);
+  spearY = pt12(2);
 
   testColor = [1 0 0];
 

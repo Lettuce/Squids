@@ -8,12 +8,11 @@ function [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta
     playerY = playerY + forwardMove*sin(playerTheta);
   endif
 
-  if (cmd == "d" )
-    playerTheta = playerTheta+thetaMove;
+  if (cmd == "c" )
+    playerTheta = playerTheta + thetaMove;
   endif
 
-  if (cmd == "a" )
-    playerTheta = playerTheta-thetaMove;
+  if (cmd == "a")
+    playerTheta = playerTheta - thetaMove;
   endif
-
  endfunction

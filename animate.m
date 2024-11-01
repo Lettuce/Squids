@@ -5,20 +5,11 @@ function animate ()
     global mouseCmd;
     global playerX;
     global playerY;
+    global mousePreviousX;
+    global mousePreviousY;
 
 
-  % Set up the game background to read keyboard events
-  figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
-                'Name', 'Keyboard Reader', ...
-                'NumberTitle', 'off', ...
-                'MenuBar', 'none', ...
-                'Position', [100, 100, 300, 200]); %Set the figure size
-
-  % Display background image
-  imageName = "OceanImage.png";
-  image = imread(imageName);
-  [imageHeight,imageWidth] = size(image);
-  imshow(imageName);
+ [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
 
   % Command parameters
   cmd = "null";
@@ -33,13 +24,15 @@ function animate ()
   netSize = 20;
   playerColor = [ 0 0 1 ];
   playerLineWidth = 3;
+  playerSpearX = 0;
+  playerSpearY = 0;
 
-
+  % squid drawing parameters
   color = [.2 .1 .6];
   width = 2;
-  squidSize = 50;
+  squidSize = 100;
   squidStep = 30;
-
+  squidCaught = 0; % squid is not caught
 
 
 
@@ -53,6 +46,8 @@ function animate ()
   circleLineWidth = 5;
   DyCircle = 50;
 
+  squidX = 300;
+  squidY = 200;
   Dx = 300;
   Dy = 200;
 
@@ -105,21 +100,33 @@ function animate ()
 
     myClock = myClock+1;
 
+
     % Move Player
-    if( cmd == "a" || cmd == "d" || cmd == "w"  )
+    if( cmd == "w"  )
     [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd);
-    endif
+  endif
 
-    %Draw player
-  [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize);
-  playerHandle = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
-  cmd = "null";
+  if( mouseCmd == "a" || mouseCmd == "c" )
+    [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,mouseCmd);
+  endif
+
+  % check player
+    [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize);
+
+  % Draw player
+    [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
+
+  % check if squid has been caught
+  if(squidCaught == 0)
+   squidCaught = isSquidCaught(playerSpearX, playerSpearY, squidX, squidY, squidSize);
+  endif
+  squidCaught
+
+  % set player command back to null
+    cmd = "null";
+    mouseCmd = "null";
 
 
-  % Rotate squid
-  R = getRotate(squidTheta);
-  squid = getSquid (squidSize, myClock);
-  squid = R*squid;
 
   % draw fish
     fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth, myClock);
@@ -144,7 +151,7 @@ function animate ()
   %  Dx = Dx + 100;
   %  squidX = squidX + squidForwardMove
 
-
+  if(squidCaught == 0)
 
     %  And Rotate ( Update the squid's heading and position
   % squidX = squidX + squidForwardMove*cos(squidTheta);
@@ -156,13 +163,18 @@ function animate ()
    squidX = squidX + squidForwardMove*cos(squidTheta);
    squidY = squidY + squidForwardMove*sin(squidTheta);
 
-
+  % Rotate squid
+    R = getRotate(squidTheta);
+    squid = getSquid (squidSize, myClock);
+    squid = R*squid;
 
    % draw the squid
    squidHandle = drawSquid(squidSize,squidColor,squidWidth, myClock,squidX,squidY,squidTheta);
+
+   % check squid
    [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
 
-
+ endif
 
     for i=1: numBubbles % bubble ascention
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
@@ -210,8 +222,9 @@ pause(.1);
 
 
    delete(circleHandle);
-
-  delete(squidHandle);
+  if(squidCaught == 0)
+    delete(squidHandle);
+  endif
   delete(fishHandle);
   delete(playerHandle);
 
