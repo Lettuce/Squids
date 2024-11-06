@@ -9,7 +9,20 @@ function animate ()
     global mousePreviousY;
 
 
- [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+  % Set up the game background to read keyboard events - prevents mousemotion callback?
+  figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
+                'Name', 'Keyboard Reader', ...
+                'NumberTitle', 'off', ...
+                'MenuBar', 'none', ...
+                'Position', [100, 100, 300, 200]); %Set the figure size
+
+  % Display background image
+ % imageName = "OceanImage.png";
+ % image = imread(imageName);
+ % [imageHeight,imageWidth] = size(image);
+ % imshow(imageName);
+
+   [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
 
   % Command parameters
   cmd = "null";
@@ -57,6 +70,12 @@ function animate ()
   bubbleStep = 50;
   bubbleMinRadius = 5;
   numBubbles = 7;
+
+    %text location
+  healthStatusLocation = [100, 200];
+  squidsCaughtLocation = [100, 3175];
+  redColor = [1 0 0];
+
 
   %remove later
   %figure(1)
