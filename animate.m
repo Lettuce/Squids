@@ -2,11 +2,12 @@ function animate ()
 
   % global parameters
     global cmd;
-    global mouseCmd;
+  %  global mouseCmd;
     global playerX;
     global playerY;
-    global mousePreviousX;
-    global mousePreviousY;
+    global playerTheta;
+  %  global mousePreviousX;
+  %  global mousePreviousY;
 
 
       % Set up the game background to read keyboard events - prevents mousemotion callback?
@@ -186,10 +187,10 @@ function animate ()
     yCenter = yCenter - DyCircle;
 
   % update the health and catch status
-  myMessage = strcat('Health', ' ');
+  myMessage = strcat('Health__ ', ' ');
   healthStatusMessage = strcat(myMessage, num2str(playerHealth));
   healthHandle       = text(healthStatusLocation(1), healthStatusLocation(2), healthStatusMessage,'FontSize', 20, 'Color', redColor);
-  catchStatusMessage = strcat('Squids Caught ', num2str(squidsCaught));
+  catchStatusMessage = strcat('Squids Caught__ ', num2str(squidsCaught));
   squidsCaughtHandle = text(squidsCaughtLocation(1), squidsCaughtLocation(2), catchStatusMessage, 'FontSize', 20, 'Color', redColor);
 
 
@@ -264,7 +265,8 @@ for i = 1:  numBubbles
 
 
 
-pause(0.0167);
+% pause(0.0167);
+pause(1);
 
 
   delete(circleHandle);
@@ -272,6 +274,7 @@ pause(0.0167);
   delete(fishHandle);
   delete(playerHandle);
   delete(healthHandle);
+  delete(squidsCaughtHandle);
 
 
 
