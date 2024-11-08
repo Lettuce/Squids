@@ -71,7 +71,7 @@ function animate ()
 
   %text location
   healthStatusLocation = [100, 200];
-  squidsCaughtLocation = [100, 3175];
+  squidsCaughtLocation = [100, 150];
   redColor = [1 0 0];
 
   %remove later
@@ -145,13 +145,13 @@ function animate ()
   %if(squidCaught == 0)
    squidCaught = isSquidCaught(playerSpearX, playerSpearY, squidX, squidY, squidSize);
   %endif
-  squidCaught
+  squidCaught;
 
     if(squidCaught == 1)
   squidsCaught = squidsCaught + 1;
   squidX = squidSize*2;
   squidY = 2*squidSize +squidForwardMove;
-  squidsCaught = 0;
+ % squidsCaught = 0;
   squidColor = [rand rand rand];
  endif
 
@@ -187,8 +187,8 @@ function animate ()
 
   % update the health and catch status
   myMessage = strcat('Health', ' ');
-  healthStatusMessage = strcat(myMessage, num2str(playerHealth))
-  healthHandle = text(healthStatusLocation(1), healthStatusLocation(2), healthStatusMessage,'FontSize', 20, 'Color', redColor)
+  healthStatusMessage = strcat(myMessage, num2str(playerHealth));
+  healthHandle       = text(healthStatusLocation(1), healthStatusLocation(2), healthStatusMessage,'FontSize', 20, 'Color', redColor);
   catchStatusMessage = strcat('Squids Caught ', num2str(squidsCaught));
   squidsCaughtHandle = text(squidsCaughtLocation(1), squidsCaughtLocation(2), catchStatusMessage, 'FontSize', 20, 'Color', redColor);
 
