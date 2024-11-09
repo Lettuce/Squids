@@ -121,7 +121,7 @@ function animate ()
       if(cmd == "q")
         disp("Quitting...");
        else
-        test(imageWidth/2,imageHeight/2,'FontSize', 30, 'Color',red);
+        test(imageWidth/2,imageHeight/2,'FontSize', 30, 'Color',redColor);
        endif
        close();
        break;
@@ -265,8 +265,8 @@ for i = 1:  numBubbles
 
 
 
-% pause(0.0167);
-pause(1);
+ pause(0.0167);
+% pause(1);
 
 
   delete(circleHandle);
