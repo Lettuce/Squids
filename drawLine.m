@@ -1,6 +1,6 @@
 function lineHandle = drawLine (point1, point2, color, width)
 
-  % extract yhr x and y coordinates for the points
+  % extract the x and y coordinates for the points
   x = [ point1(1) ; point2(1)];
   y = [ point1(2) ; point2(2)];
 
