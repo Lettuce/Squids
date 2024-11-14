@@ -32,15 +32,18 @@ function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWid
     %fishBodyHandle = line(x,y);
 
   %mouth
-    if(tickTock == 0)
-    xMouth = [x(length(x) - teethSize), xCenter, x(teethSize)];
-    yMouth = [y(length(y) - teethSize), yCenter, y(teethSize)];
+  if(tickTock == 0)
+    xMouth = [x(length(x) - teethSize), xCenter, x(teethSize)]
+    yMouth = [y(length(y) - teethSize), yCenter, y(teethSize)]
   else
-    xMouth = [xCenter,x(1)];
-    yMouth = [yCenter,y(1)];
+    xMouth = [x(length(x)), xCenter, x(1)];
+    yMouth = [y(length(y)), yCenter, y(1)];
   endif
 
   fishMouthHandle = line(xMouth,yMouth);
+
+  %  set(fishMouthHandle,'Color',[1 1 1]);
+  %  set(fishMouthHandle,'LineWidth',fishLineWidth);
 
     %tail
     xTail(1) = x(round(length(x)/2));
@@ -64,3 +67,5 @@ function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWid
 
     set(fishHandle,'Color',fishColor);
     set(fishHandle,'LineWidth',fishLineWidth);
+
+endfunction

@@ -2,27 +2,23 @@ function animate ()
 
   % global parameters
     global cmd;
-    global mouseCmd;
+  %  global mouseCmd;
     global playerX;
     global playerY;
-    global mousePreviousX;
-    global mousePreviousY;
+    global playerTheta;
+  %  global mousePreviousX;
+  %  global mousePreviousY;
 
 
-  % Set up the game background to read keyboard events - prevents mousemotion callback?
+      % Set up the game background to read keyboard events - prevents mousemotion callback?
   figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
                 'Name', 'Keyboard Reader', ...
                 'NumberTitle', 'off', ...
                 'MenuBar', 'none', ...
                 'Position', [100, 100, 300, 200]); %Set the figure size
 
-  % Display background image
- % imageName = "OceanImage.png";
- % image = imread(imageName);
- % [imageHeight,imageWidth] = size(image);
- % imshow(imageName);
 
-   [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+ [imageHeight, imageWidth] = drawOcean ("OceanImage.png")
 
   % Command parameters
   cmd = "null";
@@ -39,6 +35,8 @@ function animate ()
   playerLineWidth = 3;
   playerSpearX = 0;
   playerSpearY = 0;
+  playerHealth = 100;
+
 
   % squid drawing parameters
   color = [.2 .1 .6];
@@ -46,6 +44,7 @@ function animate ()
   squidSize = 100;
   squidStep = 30;
   squidCaught = 0; % squid is not caught
+  squidsCaught = 0;
 
 
 
@@ -71,11 +70,10 @@ function animate ()
   bubbleMinRadius = 5;
   numBubbles = 7;
 
-    %text location
+  %text location
   healthStatusLocation = [100, 200];
-  squidsCaughtLocation = [100, 3175];
+  squidsCaughtLocation = [100, 150];
   redColor = [1 0 0];
-
 
   %remove later
   %figure(1)
@@ -119,9 +117,21 @@ function animate ()
 
     myClock = myClock+1;
 
+    if(cmd == "q" || playerHealth <= 0)
+      if(cmd == "q")
+        disp("The Last Judgement Draweth Nigh.");
+       else
+        text(imageWidth/4,imageHeight/2, "The Last Judgement Draweth Nigh.", 'FontSize', 50, 'Color',redColor);
+       endif
+       pause(10);
+       close();
+       break;
+      endif
+
+      text(800,800, 'Help!!!', 'FontSize', 16, 'Color', redColor);
 
     % Move Player
-    if( cmd == "w"  )
+    if( cmd == "w" || cmd == "d" || cmd == "a" || cmd == "s")
     [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd);
   endif
 
@@ -136,10 +146,18 @@ function animate ()
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
 
   % check if squid has been caught
-  if(squidCaught == 0)
+  %if(squidCaught == 0)
    squidCaught = isSquidCaught(playerSpearX, playerSpearY, squidX, squidY, squidSize);
-  endif
-  squidCaught
+  %endif
+  squidCaught;
+
+    if(squidCaught == 1)
+  squidsCaught = squidsCaught + 1;
+  squidX = squidSize*2;
+  squidY = 2*squidSize +squidForwardMove;
+ % squidsCaught = 0;
+  squidColor = [rand rand rand];
+ endif
 
   % set player command back to null
     cmd = "null";
@@ -154,13 +172,29 @@ function animate ()
     fishX = fishX + fishForwardMove;
 
   % check fish
-    [fishX,fishY] = checkBoundary(fishX,fishY,imageWidth,imageHeight,2*fishRadius);
+    [fishX,fishY] = checkFishBoundary(fishX,fishY,imageHeight,imageWidth,fishRadius);
+
+
+
+
+
+     % is palyer bitten
+
+    playerBitten = isPlayerBitten(playerX, playerY, fishX, fishY, playerBodySize);
+
+    if(playerBitten == 1)
+      playerHealth = playerHealth - 10;
+    endif
 
 
     yCenter = yCenter - DyCircle;
 
-
-
+  % update the health and catch status
+  myMessage = strcat('Health ', ' ');
+  healthStatusMessage = cstrcat(myMessage, num2str(playerHealth));
+  healthHandle       = text(healthStatusLocation(1), healthStatusLocation(2), healthStatusMessage,'FontSize', 20, 'Color', redColor);
+  catchStatusMessage = cstrcat('Squids Caught ', num2str(squidsCaught));
+  squidsCaughtHandle = text(squidsCaughtLocation(1), squidsCaughtLocation(2), catchStatusMessage, 'FontSize', 20, 'Color', redColor);
 
 
 
@@ -169,8 +203,6 @@ function animate ()
    %Dy = Dy - 100;
   %  Dx = Dx + 100;
   %  squidX = squidX + squidForwardMove
-
-  if(squidCaught == 0)
 
     %  And Rotate ( Update the squid's heading and position
   % squidX = squidX + squidForwardMove*cos(squidTheta);
@@ -193,14 +225,13 @@ function animate ()
    % check squid
    [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
 
- endif
-
     for i=1: numBubbles % bubble ascention
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
  endfor
 
 
   %playerX = playerX + 100;
+
 
 
 
@@ -237,15 +268,16 @@ for i = 1:  numBubbles
 
 
 
-pause(.1);
+ pause(0.0167);
+% pause(1);
 
 
-   delete(circleHandle);
-  if(squidCaught == 0)
-    delete(squidHandle);
-  endif
+  delete(circleHandle);
+  delete(squidHandle);
   delete(fishHandle);
   delete(playerHandle);
+  delete(healthHandle);
+  delete(squidsCaughtHandle);
 
 
 

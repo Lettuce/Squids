@@ -15,4 +15,10 @@ function [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta
   if (cmd == "a")
     playerTheta = playerTheta - thetaMove;
   endif
+
+  if (cmd == "s")
+    playerX = playerX + 2*forwardMove*cos(playerTheta);
+    playerY = playerY + 2*forwardMove*sin(playerTheta);
+  endif
+
  endfunction

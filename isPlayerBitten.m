@@ -12,4 +12,3 @@ function playerBitten = isPlayerBitten (playerX, playerY,teethX,teethY, hitbox)
       playerBitten = 0;
    endif
 endfunction
-
