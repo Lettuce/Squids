@@ -121,7 +121,7 @@ function animate ()
       if(cmd == "q")
         disp("The Last Judgement Draweth Nigh.");
        else
-        text(imageWidth/4,imageHeight/2, "The Last Judgement Draweth Nigh.", 'FontSize', 500, 'Color',redColor);
+        text(imageWidth/4,imageHeight/2, "The Last Judgement Draweth Nigh.", 'FontSize', 50, 'Color',redColor);
        endif
        pause(10);
        close();
@@ -154,7 +154,8 @@ function animate ()
     if(squidCaught == 1)
   squidsCaught = squidsCaught + 1;
   squidX = squidSize*2;
-  squidY = 2*squidSize +squidForwardMove;
+  %squidY = squidSize +squidForwardMove;
+  squidY = rand()*imageHeight + squidForwardMove;
  % squidsCaught = 0;
   squidColor = [rand rand rand];
  endif
@@ -190,7 +191,7 @@ function animate ()
     yCenter = yCenter - DyCircle;
 
   % update the health and catch status
-  myMessage = strcat('Health ', ' ');
+  myMessage = cstrcat('Health ', ' ');
   healthStatusMessage = cstrcat(myMessage, num2str(playerHealth));
   healthHandle       = text(healthStatusLocation(1), healthStatusLocation(2), healthStatusMessage,'FontSize', 20, 'Color', redColor);
   catchStatusMessage = cstrcat('Squids Caught ', num2str(squidsCaught));

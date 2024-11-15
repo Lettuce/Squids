@@ -1,6 +1,7 @@
 function playerBitten = isPlayerBitten (playerX, playerY,teethX,teethY, hitbox)
 
-  % Compute the distance between the Spear and the Squiddeth
+  % Compute the distance between the Player and the Fish
+
   a = playerX - teethX;
   b = playerY - teethY;
 
