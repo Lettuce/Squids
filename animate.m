@@ -46,6 +46,17 @@ function animate ()
   squidCaught = 0; % squid is not caught
   squidsCaught = 0;
 
+  % Lightning parameters
+  lightningSize = 100;
+  lightningWidth = 6;
+  lightningColor = [1 1 0];
+  lightningMove = imageWidth/5;
+  lightningMaxFlashes = 1;
+  lightningX = 0;
+  lightningY = 0;
+  lightningTheta = 0;
+  lightningFlash = 0;
+
 
 
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
@@ -93,6 +104,8 @@ function animate ()
   fishForwardMove = 100;
   fishColor = [1 0 0];
   fishLineWidth = 3;
+  fishBiteDamage = 10; % amount deducted from player's health when bitten
+  fishStunTime = 10;
 
 
     % squid drawing parameters
@@ -144,6 +157,9 @@ function animate ()
 
   % Draw player
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
+
+     % check if fish stunned
+    fishStunned = isFishStunned (lightningX, lightningY, fishX, fishY, hitBox);
 
   % check if squid has been caught
   %if(squidCaught == 0)
@@ -268,6 +284,28 @@ for i = 1:  numBubbles
   endfor
 
 
+  % LIGHTNING
+  if (cmd == "l" && lightningFlash == 0 ) % create a new lightning bolt
+      lightningX = playerSpearX;
+      lightningY = playerSpearY;
+      lightningTheta = playerTheta;
+      lightningFlash = 1;
+  endif
+
+  % move lightning
+  if(lightningFlash > 0)
+  lightningX = lightningX + lightningMove*cos(lightningTheta);
+  lightningY = lightningY + lightningMove*sin(lightningTheta);
+
+  endif
+
+  % check lightning
+  [lightningX, lightningY, lightningFlash] = checkLightningBoundary (lightningX, lightningY, imageWidth, lightningSize, lightningFlash);
+
+  % draw lightning
+  if(lightningFlash > 0)
+    lightningHandle = drawLightning (lightningSize, lightningColor, lightningWidth, myClock, lightningX, lightningY, lightningTheta);
+  endif
 
  pause(0.0167);
 % pause(1);
@@ -279,6 +317,7 @@ for i = 1:  numBubbles
   delete(playerHandle);
   delete(healthHandle);
   delete(squidsCaughtHandle);
+  delete(lightningHandle);
 
 
 
