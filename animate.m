@@ -51,12 +51,12 @@ function animate ()
   lightningWidth = 6;
   lightningColor = [1 1 0];
   lightningMove = imageWidth/5;
-  lightningMaxFlashes = 1;
-  lightningX = 0;
-  lightningY = 0;
-  lightningTheta = 0;
-  lightningFlash = 0;
-
+  lightningMaxFlashes = 10;
+  lightningX = zeros(1,lightningMaxFlashes);
+  lightningY = zeros(1,lightningMaxFlashes);
+  lightningFlash = zeros(1,lightningMaxFlashes);
+  lightningTheta = zeros(1,lightningMaxFlashes);
+  lightningHandle = zeros(6,lightningMaxFlashes)
 
 
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
@@ -285,25 +285,27 @@ for i = 1:  numBubbles
 
 
   % LIGHTNING
-  if (cmd == "l" && lightningFlash == 0 ) % create a new lightning bolt
-      lightningX = playerSpearX;
-      lightningY = playerSpearY;
-      lightningTheta = playerTheta;
-      lightningFlash = 1;
+  if (cmd == "l")
+
+    for (i=1:lightningMaxFlashes(i) == 0) % create a new lightning bolt
+      lightningFlash(i) = 1;
+      lightningX(i) = playerSpearX;
+      lightningY(i) = playerSpearY;
+      lightningTheta(i) = playerTheta;
+     endfor
   endif
 
   % move lightning
   if(lightningFlash > 0)
-  lightningX = lightningX + lightningMove*cos(lightningTheta);
-  lightningY = lightningY + lightningMove*sin(lightningTheta);
-
+  lightningX = lightningX(i) + lightningMove*cos(lightningTheta(i));
+  lightningY = lightningY(i) + lightningMove*sin(lightningTheta(i));
   endif
 
   % check lightning
   [lightningX, lightningY, lightningFlash] = checkLightningBoundary (lightningX, lightningY, imageWidth, lightningSize, lightningFlash);
 
   % draw lightning
-  if(lightningFlash > 0)
+  if(lightningFlash(i) > 0)
     lightningHandle = drawLightning (lightningSize, lightningColor, lightningWidth, myClock, lightningX, lightningY, lightningTheta);
   endif
 
@@ -319,6 +321,11 @@ for i = 1:  numBubbles
   delete(squidsCaughtHandle);
   delete(lightningHandle);
 
+   for (i = 1: lightningMaxFlashes)
+      if(lightningFlash(i) > 0)
+        delete(lightningHandle(:,i));
+       endif
+   endfor
 
 
  % delete(h)
