@@ -59,6 +59,7 @@ function animate ()
   lightningHandle = zeros(5,lightningMaxFlashes);
 
 
+
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
 
   maxRadius = 20;
@@ -106,6 +107,10 @@ function animate ()
   fishLineWidth = 3;
   fishBiteDamage = 10; % amount deducted from player's health when bitten
   fishStunTime = 10;
+  stunTime = 50;
+  stunClock = 0;
+  timerStarted = 0;
+
 
 
     % squid drawing parameters
@@ -159,8 +164,9 @@ function animate ()
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
 
      % check if fish stunned
+     fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-    fishStunned = isFishStunned (lightningX(i), lightningY(i), fishX, fishY, fishRadius);
+      fishStunned = isFishStunned (lightningX(i), lightningY(i), fishX, fishY, fishRadius);
     endfor
   % check if squid has been caught
   %if(squidCaught == 0)
@@ -187,7 +193,26 @@ function animate ()
     fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth, myClock);
 
   % move fish
+  if(fishStunned == 1 && timerStarted == 0)
+    timerStarted = 1;
+    fishStunned = 0;
+  endif
+
+  if(timerStarted == 1)
+    stunTime = stunTime - 1;
+  endif
+
+  if(stunTime < 0)
+    timerStarted = 0;
+    stunTime = 50;
+  endif
+
+  if(timerStarted > 0)
+    fishX = fishX;
+  else
     fishX = fishX + fishForwardMove;
+  endif
+
 
   % check fish
     [fishX,fishY] = checkFishBoundary(fishX,fishY,imageHeight,imageWidth,fishRadius);
@@ -312,7 +337,7 @@ for i = 1:  numBubbles
   % draw lightning
   for(i = 1: lightningMaxFlashes)
     if(lightningFlash(i) > 0)
-      lightningHandle(:,i) = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
+      [lightningHandle(:,i), lightningPointX, lightningPointY] = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
     endif
   endfor
 

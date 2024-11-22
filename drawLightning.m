@@ -1,4 +1,4 @@
-function lightningHandle = drawLightning(lightningSize, lightningClock, lightningColor, lightningWidth, lightningX, lightningY, lightningTheta)
+function [lightningHandle, lightningPointX, lightningPointY] = drawLightning(lightningSize, lightningClock, lightningColor, lightningWidth, lightningX, lightningY, lightningTheta)
 
   % Get Light
   lightning = getLightning(lightningSize, lightningClock);
@@ -18,6 +18,9 @@ function lightningHandle = drawLightning(lightningSize, lightningClock, lightnin
   pt4 = lightning(:,4);
   pt5 = lightning(:,5);
   pt6 = lightning(:,6);
+
+  lightningPointX = pt5(1);
+  lightningPointY = pt5(2);
 
   testColor = [1 0 0];
 
