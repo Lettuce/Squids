@@ -48,15 +48,15 @@ function animate ()
 
   % Lightning parameters
   lightningSize = 100;
-  lightningWidth = 6;
+  lightningWidth = 3;
   lightningColor = [1 1 0];
-  lightningMove = imageWidth/5;
+  lightningMove = imageWidth/10;
   lightningMaxFlashes = 10;
   lightningX = zeros(1,lightningMaxFlashes);
   lightningY = zeros(1,lightningMaxFlashes);
   lightningFlash = zeros(1,lightningMaxFlashes);
   lightningTheta = zeros(1,lightningMaxFlashes);
-  lightningHandle = zeros(6,lightningMaxFlashes)
+  lightningHandle = zeros(5,lightningMaxFlashes);
 
 
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
@@ -159,8 +159,9 @@ function animate ()
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
 
      % check if fish stunned
-    fishStunned = isFishStunned (lightningX, lightningY, fishX, fishY, hitBox);
-
+    for(i = 1: lightningMaxFlashes)
+    fishStunned = isFishStunned (lightningX(i), lightningY(i), fishX, fishY, fishRadius);
+    endfor
   % check if squid has been caught
   %if(squidCaught == 0)
    squidCaught = isSquidCaught(playerSpearX, playerSpearY, squidX, squidY, squidSize);
@@ -177,7 +178,7 @@ function animate ()
  endif
 
   % set player command back to null
-    cmd = "null";
+
     mouseCmd = "null";
 
 
@@ -287,7 +288,7 @@ for i = 1:  numBubbles
   % LIGHTNING
   if (cmd == "l")
 
-    for (i=1:lightningMaxFlashes(i) == 0) % create a new lightning bolt
+    for (i=1:lightningMaxFlashes) % create a new lightning bolt
       lightningFlash(i) = 1;
       lightningX(i) = playerSpearX;
       lightningY(i) = playerSpearY;
@@ -296,18 +297,26 @@ for i = 1:  numBubbles
   endif
 
   % move lightning
-  if(lightningFlash > 0)
-  lightningX = lightningX(i) + lightningMove*cos(lightningTheta(i));
-  lightningY = lightningY(i) + lightningMove*sin(lightningTheta(i));
-  endif
+  for(i = 1: lightningMaxFlashes)
+    if(lightningFlash > 0)
+      lightningX(i) = lightningX(i) + lightningMove*cos(lightningTheta(i));
+      lightningY(i) = lightningY(i) + lightningMove*sin(lightningTheta(i));
+    endif
+  endfor
 
   % check lightning
-  [lightningX, lightningY, lightningFlash] = checkLightningBoundary (lightningX, lightningY, imageWidth, lightningSize, lightningFlash);
+  for(i =1: lightningMaxFlashes)
+    [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+  endfor
 
   % draw lightning
-  if(lightningFlash(i) > 0)
-    lightningHandle = drawLightning (lightningSize, lightningColor, lightningWidth, myClock, lightningX, lightningY, lightningTheta);
-  endif
+  for(i = 1: lightningMaxFlashes)
+    if(lightningFlash(i) > 0)
+      lightningHandle(:,i) = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
+    endif
+  endfor
+
+cmd = "null";
 
  pause(0.0167);
 % pause(1);
@@ -319,12 +328,12 @@ for i = 1:  numBubbles
   delete(playerHandle);
   delete(healthHandle);
   delete(squidsCaughtHandle);
-  delete(lightningHandle);
+
 
    for (i = 1: lightningMaxFlashes)
       if(lightningFlash(i) > 0)
         delete(lightningHandle(:,i));
-       endif
+      endif
    endfor
 
 
@@ -334,17 +343,7 @@ for i = 1:  numBubbles
 endwhile
  % **************************** END ANIMATE LOOP *****************************
 
- function keypress_callback(event)
 
-          % Set the command
-          cmd = event.Key;
-
-          % Check for 'q' to quit
-          if strcmp(cmd, 'q')
-              disp('Quitting...');
-              close(figureHandle); % Close the figure
-          endif
-  endfunction
 
  endfunction
 

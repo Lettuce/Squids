@@ -6,11 +6,11 @@ function lightning = getLightning(lightningSize, lightningClock)
  % lightningShake = 5;
 
  p1 = [0; 0; 1];
- p2 = [-lightningSize; 0; 1];
- p3 = [lightningSize/2; 0; 1];
+ p2 = [-2*lightningSize; 0; 1];
+ p3 = [lightningSize/4; 0; 1];
 
- p4 = [-lightningSize/2; lightningSize/2; 1];
- p5 = [lightningSize; lightningSize/2; 1];
+ p4 = [-lightningSize/4; lightningSize/2; 1];
+ p5 = [2*lightningSize; lightningSize/2; 1];
  p6 = [lightningSize/2; -lightningSize/2; 1];
 
  lightning = [p1, p2, p3, p4, p5, p6];
