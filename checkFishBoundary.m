@@ -1,13 +1,16 @@
 function [newX,newY] = checkFishBoundary (X, Y, oceanHeight, oceanWidth, fishBoundary)
 
+global playerY;
+fishExtension = 50;
 % if fish is in the ocean do nothing
 newX = X;
 newY = Y;
 
   % make sure fishX stays in the ocean
   if(X > oceanWidth - fishBoundary)  % if the squid goes off the right bd
-    newX = fishBoundary;
-    newY = fishBoundary  + rand*(oceanHeight - 2*fishBoundary );
+    newX = fishBoundary + fishExtension;
+    newY = fishBoundary + playerY;
+    %newY = fishBoundary  + rand*(oceanHeight - 2*fishBoundary );
    elseif(X < fishBoundary) % if the squid goes off the left bd
     newX = oceanWidth - fishBoundary;
     newY = Y;

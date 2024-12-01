@@ -37,8 +37,8 @@ function [handle, spearX, spearY] = drawPlayer (playerX, playerY, playerTheta, .
 
   % spear
 
-  spearX = pt12(1);
-  spearY = pt12(2);
+  spearX = pt14(1);
+  spearY = pt14(2);
 
   testColor = [1 0 0];
 

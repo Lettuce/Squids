@@ -87,32 +87,10 @@ function [player,firstHeadPoint] = getPlayer (bodySize, headSize, netSize, myClo
    T = getTranslate(headRadius+bodySize,0);
    headPoints = T * headPoints;
 
- % head = getCircle(headSize,0);
- % T = getTranslate(bodySize,0);
- % headPoints = T*head;
+  % lightning parameters
+  if (cmd == "l")
 
-  # body =
-
-  % arm
-
- # arm =
-
-
-  % leg
-
- # leg =
-
-  % hank the
-
- # tank =
-
-  % inter
-
- # net =
-
-  % combine
-
- # player = [headHandle, bodyHandle, legHandle, tankHandle, netHandle];
+  endif
 
   player = [pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11,pt12,pt13,pt14,headPoints];
 
