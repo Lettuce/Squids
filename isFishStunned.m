@@ -1,4 +1,16 @@
-function fishStunned = isFishStunned (lightningX, lightningY, fishX, fishY, hitbox);
+function fishStunned = isFishStunned (lightningX, lightningY, lightningFlash, fishX, fishY, hitbox);
+
+%  lightningBolts = length(lightningFlash);
+%    for (i = 1: lightningBolts)
+%        if(lightningFlash(i) == 1)
+%          d = getDistance(fishX, fishY, lightningX(i), lightningY(i));
+%
+%        if(d < hitBoxSize)
+%          fishStunned = 1;
+%        endif
+%
+%        endif
+%    endfor
 
 % compute the distance between the lightning and the fish
 a = lightningX - fishX;
