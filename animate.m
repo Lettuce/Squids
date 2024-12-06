@@ -172,8 +172,12 @@ function animate ()
   % check if fish stunned
      fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-      fishStunned = isFishStunned (lightningX(i), lightningY(i), lightningFlash(i), fishX, fishY, fishRadius);
+        fishStunned = isFishStunned (lightningX(i), lightningY(i), lightningFlash(i), fishX, fishY, fishRadius);
+      if(fishStunned)
+        break;
+      endif
     endfor
+    fishStunned
 
 
   % check if squid has been caught
@@ -319,16 +323,20 @@ function animate ()
   % LIGHTNING Controls
   if (cmd == "l")
     for (i=1:lightningMaxFlashes) % create a new lightning bolt
-      lightningFlash(i) = 1;
-      lightningX(i) = playerSpearX;
-      lightningY(i) = playerSpearY;
-      lightningTheta(i) = playerTheta;
+      if(lightningFlash(i) == 0)
+      disp(" Creating Lightning");
+       lightningFlash(i) = 1;
+       lightningX(i) = playerSpearX;
+       lightningY(i) = playerSpearY;
+       lightningTheta(i) = playerTheta;
+       break;
+      endif
      endfor
   endif
 
   % move lightning
   for(i = 1: lightningMaxFlashes)
-    if(lightningFlash > 0)
+    if(lightningFlash(i))
       lightningX(i) = lightningX(i) + lightningMove*cos(lightningTheta(i));
       lightningY(i) = lightningY(i) + lightningMove*sin(lightningTheta(i));
     endif
@@ -336,12 +344,14 @@ function animate ()
 
   % check lightning
   for(i =1: lightningMaxFlashes)
-    [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+    if(lightningFlash(i))
+      [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+    endif
   endfor
 
   % draw lightning
   for(i = 1: lightningMaxFlashes)
-    if(lightningFlash(i) > 0)
+    if(lightningFlash(i))
       [lightningHandle(:,i), lightningPointX, lightningPointY] = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
     endif
   endfor

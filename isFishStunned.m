@@ -13,6 +13,9 @@ function fishStunned = isFishStunned (lightningX, lightningY, lightningFlash, fi
 %    endfor
 
 % compute the distance between the lightning and the fish
+
+fishStunned = 0;
+if(lightningFlash)
 a = lightningX - fishX;
 b = lightningY - fishY;
 
@@ -20,9 +23,8 @@ d = sqrt( a^2 + b^2);
 
   if(d < hitbox)
     fishStunned = 1;
-   else
-    fishStunned = 0;
-   endif
+  endif
 
+endif
 
   endfunction
