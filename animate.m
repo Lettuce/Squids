@@ -20,7 +20,11 @@ function animate ()
                 'Position', [100, 100, 300, 200]); %Set the figure size
 
 
- [imageHeight, imageWidth] = drawOcean ("OceanImage.png")
+ [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+
+ % get player level
+ level = getLevel();
+ squids = level;
 
   % Command parameters
   cmd = "null";
@@ -89,6 +93,8 @@ function animate ()
   healthStatusLocation = [100, 200];
   squidsCaughtLocation = [100, 150];
   redColor = [1 0 0];
+
+
 
   %remove later
   %figure(1)
@@ -177,7 +183,6 @@ function animate ()
         break;
       endif
     endfor
-    fishStunned
 
 
   % check if squid has been caught
@@ -192,10 +197,16 @@ function animate ()
       squidsCaught = squidsCaught + 1;
       squidX = squidSize*2;
       %squidY = squidSize +squidForwardMove;
-      squidY = rand()*imageHeight + squidForwardMove;
+     % squidY = rand()*imageHeight;
+        squidY = rand()*imageHeight;
+      if(squidY > 800 || squidY < 300)
+        squidY = rand()*imageHeight;
+      endif
+      squidY
       % squidsCaught = 0;
       squidColor = [rand rand rand];
     endif
+
 
   % set player command back to null
     mouseCmd = "null";
