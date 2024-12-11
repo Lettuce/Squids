@@ -9,6 +9,8 @@ function animate ()
   %  global mousePreviousX;
   %  global mousePreviousY;
 
+  [smmvictory, Fs3] = audioread('SuperMachoVictory.mp3');
+
 
       % Set up the game background to read keyboard events - prevents mousemotion callback?
   figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
@@ -18,7 +20,11 @@ function animate ()
                 'Position', [100, 100, 300, 200]); %Set the figure size
 
 
- [imageHeight, imageWidth] = drawOcean ("OceanImage.png")
+ [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+
+ % get player level
+ level = getLevel();
+ squids = level;
 
   % Command parameters
   cmd = "null";
@@ -45,6 +51,10 @@ function animate ()
   squidStep = 30;
   squidCaught = 0; % squid is not caught
   squidsCaught = 0;
+  squidX = 300;
+  squidY = 200;
+  Dx = 300;
+  Dy = 200;
 
   % Lightning parameters
   lightningSize = 100;
@@ -62,6 +72,7 @@ function animate ()
 
   % drawCircle(bubbleRadius(i),bubbleX(i),bubbleY(i),color,circleLineWidth);
 
+  % Fish Parameters
   maxRadius = 20;
   radius = maxRadius*rand();
   xCenter = 500;
@@ -70,11 +81,7 @@ function animate ()
   circleLineWidth = 5;
   DyCircle = 50;
 
-  squidX = 300;
-  squidY = 200;
-  Dx = 300;
-  Dy = 200;
-
+  % Bubble Parameters
   bubbleMaxRadius= 50;
   bubbleLineWidth = 3;
   bubbleLineColor = [1 1 1];
@@ -86,6 +93,8 @@ function animate ()
   healthStatusLocation = [100, 200];
   squidsCaughtLocation = [100, 150];
   redColor = [1 0 0];
+
+
 
   %remove later
   %figure(1)
@@ -146,6 +155,7 @@ function animate ()
        break;
       endif
 
+
       text(800,800, 'Help!!!', 'FontSize', 16, 'Color', redColor);
 
     % Move Player
@@ -153,6 +163,8 @@ function animate ()
     [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,cmd);
   endif
 
+
+  % move right and left
   if( mouseCmd == "a" || mouseCmd == "c" )
     [playerX,playerY,playerTheta] = movePlayer (playerX,playerY,playerTheta,mouseCmd);
   endif
@@ -163,31 +175,41 @@ function animate ()
   % Draw player
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
 
-     % check if fish stunned
+  % check if fish stunned
      fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-      fishStunned = isFishStunned (lightningX(i), lightningY(i), fishX, fishY, fishRadius);
+        fishStunned = isFishStunned (lightningX(i), lightningY(i), lightningFlash(i), fishX, fishY, fishRadius);
+      if(fishStunned)
+        break;
+      endif
     endfor
+
+
   % check if squid has been caught
   %if(squidCaught == 0)
    squidCaught = isSquidCaught(playerSpearX, playerSpearY, squidX, squidY, squidSize);
   %endif
   squidCaught;
 
+
+   % Squid Caught
     if(squidCaught == 1)
-  squidsCaught = squidsCaught + 1;
-  squidX = squidSize*2;
-  %squidY = squidSize +squidForwardMove;
-  squidY = rand()*imageHeight + squidForwardMove;
- % squidsCaught = 0;
-  squidColor = [rand rand rand];
- endif
+      squidsCaught = squidsCaught + 1;
+      squidX = squidSize*2;
+      %squidY = squidSize +squidForwardMove;
+     % squidY = rand()*imageHeight;
+        squidY = rand()*imageHeight;
+      if(squidY > 800 || squidY < 300)
+        squidY = rand()*imageHeight;
+      endif
+      squidY
+      % squidsCaught = 0;
+      squidColor = [rand rand rand];
+    endif
+
 
   % set player command back to null
-
     mouseCmd = "null";
-
-
 
   % draw fish
     fishHandle = drawFish (fishRadius, fishX, fishY, fishColor, fishLineWidth, myClock);
@@ -279,6 +301,7 @@ function animate ()
 
 
 
+  % Bubbles
  for i=1: numBubbles % bubble check add
    if(bubbleY(i)<3*bubbleMaxRadius)
    bubbleY(i) = imageHeight - 3*bubbleMaxRadius;
@@ -286,10 +309,10 @@ function animate ()
    bubbleRadius(i) = rand()*bubbleMaxRadius + bubbleMinRadius;
    endif
 
-endfor
+ endfor
 
 
-[xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius);
+    [xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius);
 
 %[Dx, Dy] = checkBoundary (Dx,Dy,imageWidth,imageHeight,2*squidSize);
  % squidHandle = drawSquid(squidSize,squidColor,squidWidth, myClock,squidX,squidY)
@@ -299,31 +322,32 @@ endfor
  % if (yCenter - 2*radius < 0) % circle return
  %   yCenter = imageHeight-2*radius;
  % endif
-for i = 1: numBubbles
-[bubbleX(i),bubbleY(i)] = checkBoundary (bubbleX(i),bubbleY(i),imageWidth,imageHeight,bubbleRadius(i));
-
+  for i = 1: numBubbles
+    [bubbleX(i),bubbleY(i)] = checkBoundary (bubbleX(i),bubbleY(i),imageWidth,imageHeight,bubbleRadius(i));
   endfor
 
-for i = 1:  numBubbles
+  for i = 1:  numBubbles
     circleHandle(i) = drawCircle (bubbleRadius(i), bubbleX(i), bubbleY(i), bubbleLineColor, bubbleLineWidth);
-
   endfor
 
 
-  % LIGHTNING
+  % LIGHTNING Controls
   if (cmd == "l")
-
     for (i=1:lightningMaxFlashes) % create a new lightning bolt
-      lightningFlash(i) = 1;
-      lightningX(i) = playerSpearX;
-      lightningY(i) = playerSpearY;
-      lightningTheta(i) = playerTheta;
+      if(lightningFlash(i) == 0)
+      disp(" Creating Lightning");
+       lightningFlash(i) = 1;
+       lightningX(i) = playerSpearX;
+       lightningY(i) = playerSpearY;
+       lightningTheta(i) = playerTheta;
+       break;
+      endif
      endfor
   endif
 
   % move lightning
   for(i = 1: lightningMaxFlashes)
-    if(lightningFlash > 0)
+    if(lightningFlash(i))
       lightningX(i) = lightningX(i) + lightningMove*cos(lightningTheta(i));
       lightningY(i) = lightningY(i) + lightningMove*sin(lightningTheta(i));
     endif
@@ -331,18 +355,23 @@ for i = 1:  numBubbles
 
   % check lightning
   for(i =1: lightningMaxFlashes)
-    [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+    if(lightningFlash(i))
+      [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+    endif
   endfor
 
   % draw lightning
   for(i = 1: lightningMaxFlashes)
-    if(lightningFlash(i) > 0)
+    if(lightningFlash(i))
       [lightningHandle(:,i), lightningPointX, lightningPointY] = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
     endif
   endfor
 
-cmd = "null";
+  cmd = "null";
 
+
+
+  % Wait For THIS Long ->
  pause(0.0167);
 % pause(1);
 
@@ -363,6 +392,14 @@ cmd = "null";
 
 
  % delete(h)
+
+ if(squidsCaught == 5)
+        text(imageWidth/3,imageHeight/2, "Victory! Dinner Is Soon!", 'FontSize', 50, 'Color',redColor);
+        pause(0.1);
+        sound(smmvictory, Fs3);
+        close();
+        break;
+ endif
 
 
 endwhile
