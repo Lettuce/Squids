@@ -26,6 +26,9 @@ function animate ()
  level = getLevel();
  squids = level;
 
+
+
+
   % Command parameters
   cmd = "null";
   mouseCmd = "null";
@@ -62,11 +65,14 @@ function animate ()
   lightningColor = [1 1 0];
   lightningMove = imageWidth/10;
   lightningMaxFlashes = 10;
+  lightningRows = 3;
+  lightningColumns = 6;
   lightningX = zeros(1,lightningMaxFlashes);
   lightningY = zeros(1,lightningMaxFlashes);
   lightningFlash = zeros(1,lightningMaxFlashes);
   lightningTheta = zeros(1,lightningMaxFlashes);
   lightningHandle = zeros(5,lightningMaxFlashes);
+  lightning = zeros(lightningRows, lightningColumns, lightningMaxFlashes);
 
 
 
@@ -139,8 +145,62 @@ function animate ()
       % game Clock
   myClock = 0;
 
+
+  if(level == 1)
+    fishForwardMove = 100;
+    squidStep = 30;
+    lightningMove = imageWidth/10;
+    fishBiteDamage = 10;
+  elseif(level == 2)
+    fishForwardMove = 110;
+    squidStep = 32;
+    lightningMove = imageWidth/10.5;
+    fishBiteDamage = 12;
+  elseif(level == 3)
+    fishForwardMove = 120;
+    squidStep = 34;
+    lightningMove = imageWidth/11;
+    fishBiteDamage = 14;
+  elseif(level == 4)
+    fishForwardMove = 130;
+    squidStep = 36;
+    lightningMove = imageWidth/11.5;
+    fishBiteDamage = 16;
+  elseif(level == 5)
+    fishForwardMove = 140;
+    squidStep = 38;
+    lightningMove = imageWidth/12;
+    fishBiteDamage = 18;
+  elseif(level == 6)
+    fishForwardMove = 150;
+    squidStep = 40;
+    lightningMove = imageWidth/12.5;
+    fishBiteDamage = 20;
+  elseif(level == 7)
+    fishForwardMove = 160;
+    squidStep = 42;
+    lightningMove = imageWidth/13;
+    fishBiteDamage = 22;
+  elseif(level == 8)
+    fishForwardMove = 170;
+    squidStep = 44;
+    lightningMove = imageWidth/13.5;
+    fishBiteDamage = 24;
+  elseif(level == 9)
+    fishForwardMove = 180;
+    squidStep = 46;
+    lightningMove = imageWidth/14;
+    fishBiteDamage = 26;
+  endif
+
     % ******************************* Animate Loop *********************************
   while( true)
+
+
+
+
+
+
 
     myClock = myClock+1;
 
@@ -178,7 +238,7 @@ function animate ()
   % check if fish stunned
      fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-        fishStunned = isFishStunned (lightningX(i), lightningY(i), lightningFlash(i), fishX, fishY, fishRadius);
+        fishStunned = isFishStunned (lightning, lightningMaxFlashes(i), fishX, fishY, fishRadius);
       if(fishStunned)
         break;
       endif
@@ -248,7 +308,7 @@ function animate ()
     playerBitten = isPlayerBitten(playerX, playerY, fishX, fishY, playerBodySize);
 
     if(playerBitten == 1)
-      playerHealth = playerHealth - 10;
+      playerHealth = playerHealth - fishBiteDamage;
     endif
 
 
@@ -356,14 +416,14 @@ function animate ()
   % check lightning
   for(i =1: lightningMaxFlashes)
     if(lightningFlash(i))
-      [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, lightningSize, lightningFlash(i));
+      [lightningX(i), lightningY(i), lightningFlash(i)] = checkLightningBoundary (lightningX(i), lightningY(i), imageWidth, imageHeight, 2*lightningSize, lightningFlash(i));
     endif
   endfor
 
   % draw lightning
   for(i = 1: lightningMaxFlashes)
     if(lightningFlash(i))
-      [lightningHandle(:,i), lightningPointX, lightningPointY] = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
+      [lightningHandle(:,i), lightning(:,:,i)] = drawLightning (lightningSize, myClock, lightningColor, lightningWidth, lightningX(i), lightningY(i), lightningTheta(i));
     endif
   endfor
 

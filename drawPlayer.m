@@ -67,8 +67,11 @@ function [handle, spearX, spearY] = drawPlayer (playerX, playerY, playerTheta, .
  % [playerRows, lastHeadPoint] = size(player);
 
 
+  % head fill
 
-
+ % x = [pt13(1),pt14(1),pt15(1),pt16(1)];
+ % y = [pt13(2),pt14(2),pt15(2),pt16(2)];
+  handle(12) = patch(xHeadPoints,yHeadPoints,[0 0 1]);
 
 
   endfunction
