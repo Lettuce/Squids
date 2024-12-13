@@ -1,4 +1,4 @@
-function fishStunned = isFishStunned (lightning, lightningFlash, fishX, fishY, hitbox);
+function fishStunned = isFishStunned (lightning, lightningMaxFlashes, lightningFlash, fishX, fishY, hitbox);
 
 %  lightningBolts = length(lightningFlash);
 %    for (i = 1: lightningBolts)
@@ -17,16 +17,22 @@ function fishStunned = isFishStunned (lightning, lightningFlash, fishX, fishY, h
 for(k = 1: lightningMaxFlashes)
   fishStunned = 0;
   for(j = 1: columns)
+    flashPoint = lightning(:, j, k);
     for(i = 1: rows)
-      if(lightningFlash)
-        a = lightning(i,j,k) - fishX;
-        b = lightning(i,j,k) - fishY;
+
+
+     if(lightningFlash(k))
+        a = flashPoint(1) - fishX;
+        b = flashPoint(2) - fishY;
         d = sqrt( a^2 + b^2);
 
         if(d < hitbox)
-          fishStunned = 1;
+          fishStunned = 1
+          return;
         endif
-      endif
+
+     endif
+
     endfor
   endfor
 endfor

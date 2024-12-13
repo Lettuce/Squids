@@ -238,7 +238,7 @@ function animate ()
   % check if fish stunned
      fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-        fishStunned = isFishStunned (lightning, lightningMaxFlashes(i), fishX, fishY, fishRadius);
+        fishStunned = isFishStunned (lightning, lightningMaxFlashes, lightningFlash, fishX, fishY, fishRadius);
       if(fishStunned)
         break;
       endif
@@ -395,7 +395,7 @@ function animate ()
   if (cmd == "l")
     for (i=1:lightningMaxFlashes) % create a new lightning bolt
       if(lightningFlash(i) == 0)
-      disp(" Creating Lightning");
+   %   disp(" Creating Lightning");
        lightningFlash(i) = 1;
        lightningX(i) = playerSpearX;
        lightningY(i) = playerSpearY;
