@@ -126,6 +126,12 @@ function animate ()
   stunClock = 0;
   timerStarted = 0;
 
+  % create THE WORLD
+  allStunTime = 500;
+  theStunTime = 50;
+  allStunTimerStarted = 0;
+  allStunClock = 0;
+
 
 
     % squid drawing parameters
@@ -230,7 +236,7 @@ function animate ()
   endif
 
   % check player
-    [playerX,playerY] = checkBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize);
+    [playerX,playerY] = checkPlayerBoundary(playerX,playerY,imageWidth,imageHeight,2*playerBodySize);
 
   % Draw player
     [playerHandle,playerSpearX,playerSpearY] = drawPlayer (playerX, playerY, playerTheta, playerBodySize, playerHeadSize, netSize, playerColor, playerLineWidth, myClock, cmd);
@@ -295,6 +301,10 @@ function animate ()
     fishX = fishX + fishForwardMove;
   endif
 
+ % if(!allStunTimerStarted)
+ %   fishX = fishX + fishForwardMove;
+ % endif
+
 
   % check fish
     [fishX,fishY] = checkFishBoundary(fishX,fishY,imageHeight,imageWidth,fishRadius);
@@ -335,22 +345,24 @@ function animate ()
   % squidY = squidY + 100;
  %  squidY = squidY + squidForwardMove*cos(squidTheta);
 
+ if(!allStunTimerStarted)
    squidTheta = squidTheta + squidDeltaTheta;
    squidX = squidX + squidForwardMove*cos(squidTheta);
    squidY = squidY + squidForwardMove*sin(squidTheta);
-
   % Rotate squid
     R = getRotate(squidTheta);
     squid = getSquid (squidSize, myClock);
     squid = R*squid;
 
+
    % draw the squid
    squidHandle = drawSquid(squidSize,squidColor,squidWidth, myClock,squidX,squidY,squidTheta);
 
    % check squid
-   [squidX,squidY] = checkBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
+   [squidX,squidY] = checkSquidBoundary(squidX,squidY,imageWidth,imageHeight,3*squidSize);
+endif
 
-    for i=1: numBubbles % bubble ascention
+ for i=1: numBubbles % bubble ascention
     bubbleY(i) = bubbleY(i) - rand()*bubbleStep;
  endfor
 
@@ -362,14 +374,14 @@ function animate ()
 
 
   % Bubbles
- for i=1: numBubbles % bubble check add
-   if(bubbleY(i)<3*bubbleMaxRadius)
-   bubbleY(i) = imageHeight - 3*bubbleMaxRadius;
-   bubbleX(i) = rand() * imageWidth;
-   bubbleRadius(i) = rand()*bubbleMaxRadius + bubbleMinRadius;
-   endif
+% for i=1: numBubbles % bubble check add
+%   if(bubbleY(i)<3*bubbleMaxRadius)
+%   bubbleY(i) = imageHeight - 3*bubbleMaxRadius;
+%   bubbleX(i) = rand() * imageWidth;
+%   bubbleRadius(i) = rand()*bubbleMaxRadius + bubbleMinRadius;
+%   endif
 
- endfor
+% endfor
 
 
     [xCenter,yCenter] = checkBoundary (xCenter,yCenter,imageWidth,imageHeight,radius);
@@ -427,7 +439,45 @@ function animate ()
     endif
   endfor
 
-  cmd = "null";
+%  cmd = "null";
+
+
+  % THE WORLD
+
+if(cmd == "z")
+  % play the world
+  pause(2);
+  allStunned = 1;
+  allStunTimerStarted = 0;
+  if(allStunned == 1 && allStunTimerStarted == 0)
+    allStunTimerStarted = 1;
+    allStunned = 0;
+  endif
+
+  if(allStunTimerStarted == 1)
+    allStunTime = allStunTime - 1;
+  endif
+
+  if(allStunTime < 0)
+    allStunTimerStarted = 0;
+    allStunTime = 500;
+  endif
+endif
+cmd
+
+
+
+if(!allStunTimerStarted)
+ for i=1: numBubbles % bubble check add
+   if(bubbleY(i)<3*bubbleMaxRadius)
+    bubbleY(i) = imageHeight - 3*bubbleMaxRadius;
+    bubbleX(i) = rand() * imageWidth;
+    bubbleRadius(i) = rand()*bubbleMaxRadius + bubbleMinRadius;
+   endif
+  endfor
+endif
+cmd = "null";
+
 
 
 
@@ -436,12 +486,15 @@ function animate ()
 % pause(1);
 
 
-  delete(circleHandle);
+if(!allStunTimerStarted)
   delete(squidHandle);
+  delete(circleHandle);
   delete(fishHandle);
   delete(playerHandle);
   delete(healthHandle);
   delete(squidsCaughtHandle);
+endif
+
 
 
    for (i = 1: lightningMaxFlashes)

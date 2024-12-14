@@ -20,7 +20,6 @@ for(k = 1: lightningMaxFlashes)
     flashPoint = lightning(:, j, k);
     for(i = 1: rows)
 
-
      if(lightningFlash(k))
         a = flashPoint(1) - fishX;
         b = flashPoint(2) - fishY;
