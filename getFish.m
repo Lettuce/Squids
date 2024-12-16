@@ -1,4 +1,4 @@
-function fish = getFish (fishSize,clock)
+function fish = getFish (fishSize,clock, isStunned)
 
 
   % frame 0

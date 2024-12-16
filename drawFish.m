@@ -1,7 +1,11 @@
-function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWidth,  myClock)
+function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWidth,  myClock, isStunned)
 
   % compute tickTock
+  if(isStunned)
+    tickTock = 0;
+  else
     tickTock = mod( myClock,2);
+  endif
 
     mouthAngle = pi/5;
     teethSize = 5;
@@ -24,8 +28,9 @@ function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWid
     x = circleMatrix(1,:);
     y = circleMatrix(2,:);
 
-    x = [x,xCenter,x(1)];
-    y = [y,yCenter,y(1)];
+    fishBodyHandle = line(x,y);
+ %   x = [x,xCenter,x(1)];
+ %   y = [y,yCenter,y(1)];
   %  z = ones(1,length(x));
 
   % circle of radius r about the xCenter, yCenter
@@ -58,7 +63,7 @@ function fishHandle = drawFish (radius, xCenter, yCenter, fishColor, fishLineWid
     xTail(4) = xTail(1);
     yTail(4) = yTail(1);
 
-    fishBodyHandle = line(x,y);
+
 
     fishTailHandle = line(xTail, yTail);
 
