@@ -16,7 +16,7 @@ newY = Y;
   elseif (Y > oceanHeight - objectRadius) % bottom check
     newY =  oceanHeight - objectRadius;
   endif
-  newX
-  objectRadius
+
+
 
   endfunction

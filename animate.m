@@ -10,17 +10,18 @@ function animate ()
   %  global mousePreviousY;
 
   [smmvictory, Fs3] = audioread('SuperMachoVictory.mp3');
-  [theworldstart, Fs2] = audioread('timestopstart.mp3');
-  [theworldend,Fs2] = audioread('timestopend.mp3');
-  [lightningsound, Fs2] = audioread('lightningsound.mp3');
+  [theworldstart, Fs2] = audioread('timestopstart.wav');
+  [theworldend,Fs2] = audioread('timestopend.wav');
+  [theworld, Fs2] = audioread('timestop.wav');
+ % [lightningsound, Fs2] = audioread('lightningsound.wav');
 
 
       % Set up the game background to read keyboard events - prevents mousemotion callback?
-  figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
-                'Name', 'Keyboard Reader', ...
-                'NumberTitle', 'off', ...
-                'MenuBar', 'none', ...
-                'Position', [100, 100, 300, 200]); %Set the figure size
+ % figureHandle = figure('KeyPressFcn', @(src, event) keypress_callback(event), ...
+ %               'Name', 'Keyboard Reader', ...
+ %               'NumberTitle', 'off', ...
+ %               'MenuBar', 'none', ...
+ %               'Position', [100, 100, 300, 200]); %Set the figure size
 
 
  [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
@@ -76,6 +77,8 @@ function animate ()
   lightningTheta = zeros(1,lightningMaxFlashes);
   lightningHandle = zeros(5,lightningMaxFlashes);
   lightning = zeros(lightningRows, lightningColumns, lightningMaxFlashes);
+  [lightningSound, soundSamplingRate] = getSound ("lightningsound.wav");
+  lightningsnd = audioplayer(lightningSound,soundSamplingRate);
 
 
 
@@ -130,12 +133,14 @@ function animate ()
   timerStarted = 0;
 
   % create THE WORLD
-  stunTimeMax = 50;
+  stunTimeMax = 20;
   allStunTime = stunTimeMax;
   theStunTime = 50;
   allStunTimerStarted = 0;
   allStunClock = 0;
   allStunned = 0;
+  [theWorldSound, soundSamplingRate] = getSound ("timestop.wav");
+  worldSound = audioplayer(theWorldSound,soundSamplingRate);
 
 
 
@@ -208,11 +213,11 @@ function animate ()
     % ******************************* Animate Loop *********************************
   while( true)
 
-%  if(allStunTimerStarted == 1)
-%    [imageHeight, imageWidth] = drawOcean ("grayOceanImage.png");
-%  else
-%    [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
-%  endif
+ % if(allStunTimerStarted == 1)
+ %   [imageHeight, imageWidth] = drawOcean ("grayOceanImage.png");
+ % else
+ %   [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+ % endif
 
 
 
@@ -230,7 +235,7 @@ function animate ()
       endif
 
 
-      text(800,800, 'Help!!!', 'FontSize', 16, 'Color', redColor);
+ %     text(800,800, 'Help!!!', 'FontSize', 16, 'Color', redColor);
 
     % Move Player
     if( cmd == "w" || cmd == "d" || cmd == "a" || cmd == "s")
@@ -373,6 +378,8 @@ endif
 
 
 
+
+
   %playerX = playerX + 100;
 
 
@@ -411,7 +418,7 @@ endif
 
   % LIGHTNING Controls
   if (cmd == "l")
-    sound(lightningsound, Fs2);
+    play(lightningsnd);
     for (i=1:lightningMaxFlashes) % create a new lightning bolt
       if(lightningFlash(i) == 0)
    %   disp(" Creating Lightning");
@@ -453,7 +460,8 @@ endfor
 
 if(cmd == "z")
   % play the world
-  sound(theworldstart, Fs3);
+  play(worldSound);
+% sound(theworldstart, Fs3);
   allStunTimerStarted = 1;
 endif
 
@@ -485,10 +493,6 @@ else
 
 
 endif
-
- if(allStunTime == 0)
-   sound(theworldend, Fs2);
- endif
 
 cmd = "null";
 
