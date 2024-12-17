@@ -44,7 +44,6 @@ function mouseMotion_callback(src,event)
 
 
 
-
   %get cross product of current and previous mouse locations relative to player
  % mouseRotation = (mousePreviousX - playerX) * (mouseY - playerY) - (mouseX - playerX) * (mousePreviousY - playerY);
 

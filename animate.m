@@ -10,6 +10,9 @@ function animate ()
   %  global mousePreviousY;
 
   [smmvictory, Fs3] = audioread('SuperMachoVictory.mp3');
+  [theworldstart, Fs2] = audioread('timestopstart.mp3');
+  [theworldend,Fs2] = audioread('timestopend.mp3');
+  [lightningsound, Fs2] = audioread('lightningsound.mp3');
 
 
       % Set up the game background to read keyboard events - prevents mousemotion callback?
@@ -127,7 +130,7 @@ function animate ()
   timerStarted = 0;
 
   % create THE WORLD
-  stunTimeMax = 20;
+  stunTimeMax = 50;
   allStunTime = stunTimeMax;
   theStunTime = 50;
   allStunTimerStarted = 0;
@@ -201,17 +204,19 @@ function animate ()
     fishBiteDamage = 26;
   endif
 
+
     % ******************************* Animate Loop *********************************
   while( true)
 
-
-
-
+%  if(allStunTimerStarted == 1)
+%    [imageHeight, imageWidth] = drawOcean ("grayOceanImage.png");
+%  else
+%    [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+%  endif
 
 
 
     myClock = myClock+1;
-    allStunTime
 
     if(cmd == "q" || playerHealth <= 0)
       if(cmd == "q")
@@ -252,6 +257,8 @@ function animate ()
         break;
       endif
     endfor
+
+
 
 
   % check if squid has been caught
@@ -404,6 +411,7 @@ endif
 
   % LIGHTNING Controls
   if (cmd == "l")
+    sound(lightningsound, Fs2);
     for (i=1:lightningMaxFlashes) % create a new lightning bolt
       if(lightningFlash(i) == 0)
    %   disp(" Creating Lightning");
@@ -445,7 +453,7 @@ endfor
 
 if(cmd == "z")
   % play the world
-
+  sound(theworldstart, Fs3);
   allStunTimerStarted = 1;
 endif
 
@@ -477,6 +485,10 @@ else
 
 
 endif
+
+ if(allStunTime == 0)
+   sound(theworldend, Fs2);
+ endif
 
 cmd = "null";
 

@@ -26,7 +26,7 @@ for(k = 1: lightningMaxFlashes)
         d = sqrt( a^2 + b^2);
 
         if(d < hitbox)
-          fishStunned = 1
+          fishStunned = 1;
           return;
         endif
 
