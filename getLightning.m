@@ -37,4 +37,5 @@ function lightning = getLightning(lightningSize, lightningClock)
  %  lightningHandle = line(x,y);
 
 
+
 endfunction

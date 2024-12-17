@@ -1,10 +1,14 @@
-function squid = getSquid (squidSize,clock)
+function squid = getSquid (squidSize,clock, isStunned)
 
   %squidPoints = getSquid(squidSize);
    %do modular division. mod(n,m) This gives the remainder after diviing n by m.
 
   %frame = 0
-  frame = mod(clock,2);
+  if(isStunned)
+    frame = 0;
+  else
+    frame = mod(clock,2);
+  endif
 
  if( frame == 0)
     legSeparation = squidSize;
