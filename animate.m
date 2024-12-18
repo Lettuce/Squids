@@ -277,7 +277,7 @@ function animate ()
   % check if fish stunned
      fishStunned = 0;
     for(i = 1: lightningMaxFlashes)
-        fishStunned = isFishStunned (lightning, lightningMaxFlashes, lightningFlash, fishX, fishY, fishRadius);
+        fishStunned = isFishStunned (lightning, lightningMaxFlashes, lightningFlash, fishX, fishY, 2*fishRadius);
       if(fishStunned)
         break;
       endif
