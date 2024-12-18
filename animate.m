@@ -28,6 +28,7 @@ function animate ()
  [oceanMusic,soundSamplingRate] = getSound("waterMusic.wav");
  oceanBGMusic = audioplayer(oceanMusic, soundSamplingRate);
 
+
  % get player level
  level = getLevel();
  squids = level;
@@ -221,6 +222,7 @@ function animate ()
     fishBiteDamage = 26;
   endif
 
+
     play(oceanBGMusic);
 
     % ******************************* Animate Loop *********************************
@@ -365,7 +367,8 @@ function animate ()
   catchStatusMessage = cstrcat('Squids Caught ', num2str(squidsCaught));
   squidsCaughtHandle = text(squidsCaughtLocation(1), squidsCaughtLocation(2), catchStatusMessage, 'FontSize', 20, 'Color', redColor);
 
-
+  squidRequirementMessage = cstrcat('Catch: ', num2str(maxSquidsCaught), ' Squids To Win!');
+  squidRequirementMessageHandle = text(100, 250, squidRequirementMessage, 'FontSize', 20, 'Color', redColor);
 
 
     % Change the X and Y step of the squid per movement
@@ -537,6 +540,7 @@ cmd = "null";
   delete(playerHandle);
   delete(healthHandle);
   delete(squidsCaughtHandle);
+  delete(squidRequirementMessageHandle);
 
 
 

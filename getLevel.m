@@ -2,7 +2,7 @@ function level = getLevel()
 
     global cmd;
 
-    levelLocation = [1000,500];
+    levelLocation = [900,500];
     % ask a user for level
 
     levelMessage = cstrcat("Choose The Level 1-9 ");
