@@ -25,6 +25,8 @@ function animate ()
 
 
  [imageHeight, imageWidth] = drawOcean ("OceanImage.png");
+ [oceanMusic,soundSamplingRate] = getSound("waterMusic.wav");
+ oceanBGMusic = audioplayer(oceanMusic, soundSamplingRate);
 
  % get player level
  level = getLevel();
@@ -49,6 +51,11 @@ function animate ()
   playerSpearX = 0;
   playerSpearY = 0;
   playerHealth = 100;
+  [hurtSound, soundSamplingRate] = getSound("hurtSound.wav");
+  playerHurtSound = audioplayer(hurtSound, soundSamplingRate);
+
+ [gameOverMusic,soundSamplingRate] = getSound("gameOver.wav");
+ gameOver = audioplayer(gameOverMusic, soundSamplingRate);
 
 
   % squid drawing parameters
@@ -62,6 +69,9 @@ function animate ()
   squidY = 200;
   Dx = 300;
   Dy = 200;
+  maxSquidsCaught = 10;
+  [squidCaughtSound, soundSamplingRate] = getSound ("squidCaught.wav");
+  squidCollect = audioplayer(squidCaughtSound,soundSamplingRate);
 
   % Lightning parameters
   lightningSize = 100;
@@ -131,15 +141,17 @@ function animate ()
   stunTime = 50;
   stunClock = 0;
   timerStarted = 0;
+  [fishShockSound, soundSamplingRate] = getSound ("fishShock.wav");
+  fishShock = audioplayer(fishShockSound,soundSamplingRate);
 
   % create THE WORLD
-  stunTimeMax = 20;
+  stunTimeMax = 45;
   allStunTime = stunTimeMax;
   theStunTime = 50;
   allStunTimerStarted = 0;
   allStunClock = 0;
   allStunned = 0;
-  [theWorldSound, soundSamplingRate] = getSound ("timestop.wav");
+  [theWorldSound, soundSamplingRate] = getSound ("timestop2.wav");
   worldSound = audioplayer(theWorldSound,soundSamplingRate);
 
 
@@ -209,9 +221,14 @@ function animate ()
     fishBiteDamage = 26;
   endif
 
+    play(oceanBGMusic);
 
     % ******************************* Animate Loop *********************************
   while( true)
+
+
+
+
 
  % if(allStunTimerStarted == 1)
  %   [imageHeight, imageWidth] = drawOcean ("grayOceanImage.png");
@@ -227,9 +244,10 @@ function animate ()
       if(cmd == "q")
         disp("The Last Judgement Draweth Nigh.");
        else
+        play(gameOver);
         text(imageWidth/4,imageHeight/2, "The Last Judgement Draweth Nigh.", 'FontSize', 50, 'Color',redColor);
        endif
-       pause(10);
+       pause(15);
        close();
        break;
       endif
@@ -275,6 +293,7 @@ function animate ()
 
    % Squid Caught
     if(squidCaught == 1)
+      play(squidCollect);
       squidsCaught = squidsCaught + 1;
       squidX = squidSize*2;
       %squidY = squidSize +squidForwardMove;
@@ -297,6 +316,7 @@ function animate ()
 
   % move fish
   if(fishStunned == 1 && timerStarted == 0)
+    play(fishShock);
     timerStarted = 1;
     fishStunned = 0;
   endif
@@ -331,6 +351,7 @@ function animate ()
     playerBitten = isPlayerBitten(playerX, playerY, fishX, fishY, playerBodySize);
 
     if(playerBitten == 1)
+      play(playerHurtSound);
       playerHealth = playerHealth - fishBiteDamage;
     endif
 
@@ -529,7 +550,7 @@ cmd = "null";
 
  % delete(h)
 
- if(squidsCaught == 5)
+ if(squidsCaught == maxSquidsCaught)
         text(imageWidth/3,imageHeight/2, "Victory! Dinner Is Soon!", 'FontSize', 50, 'Color',redColor);
         pause(0.1);
         sound(smmvictory, Fs3);
